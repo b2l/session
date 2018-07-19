@@ -1,274 +1,136 @@
-set nocompatible " be iMproved
-filetype off " required!
+  " Init Plug
+  if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+     !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  endif
 
-" Vundle setup
-" required!
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+  source ~/.vim/plugins.vim
 
-" let Vundle manage Vundle
-" required!
-Plugin 'gmarik/vundle'
-
-" My Plugin here:
-"
-" original repos on github
-Plugin 'tpope/vim-fugitive'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'scrooloose/nerdtree'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'Shougo/neocomplete.vim'
-" vim-scripts repos
-Plugin 'sheerun/vim-polyglot'
-Plugin 'robbles/logstash.vim'
-" non github repos
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'rdolgushin/groovy.vim'
-Plugin 'ntpeters/vim-better-whitespace' " Trailing whitespaces visual and deletion
-Plugin 'andrewstuart/vim-kubernetes'    " Kubernetes snippet
-Plugin 'SirVer/ultisnips'               " Snippet Engine
-Plugin 'Yggdroot/indentLine'            " vertical line for indent
-Plugin 'Lokaltog/vim-powerline'         " bottom bar
-Plugin 'tpope/vim-commentary'           " commentary
-Plugin 'chrisbra/Colorizer'             " commentary
-Plugin 'nvie/vim-flake8'
-Plugin 'tpope/vim-pathogen'
-Plugin 'c9s/helper.vim'
-Plugin 'c9s/treemenu.vim'
-Plugin 'c9s/vikube.vim'
-Plugin 'Shougo/neosnippet.vim'
-Plugin 'Shougo/neosnippet-snippets'
-Plugin 'fatih/vim-go'
-Plugin 'majutsushi/tagbar'              " Listing tags
-" ...
-
-set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
-
-let g:UltiSnipsExpandTrigger="<c-b>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-" Neosnippet Conf
-imap   <C-k>      <Plug>(neosnippet_expand_or_jump)
-smap   <C-k>      <Plug>(neosnippet_expand_or_jump)
-xmap   <C-k>      <Plug>(neosnippet_expand_target)
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-filetype plugin indent on " required!
-"
-" Brief help
-" :BundleList - list configured bundles
-" :BundleInstall(!) - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!) - confirm(or auto-approve) removal of unused bundles
-"
-" see :h vundle for more details or wiki for FAQ
-
-
-""""""""""""""""""""""""""""""""""""""""""""""
-"              General options
-""""""""""""""""""""""""""""""""""""""""""""""
-
-" No vi compatible mode
-" Enables vim features that makes it more useful
-set nocompatible
-
-" Display line numbers
-set number
-set relativenumber
-
-set clipboard=unnamedplus
-
-" switch leader key for mappings to ,
-let mapleader="\<Space>"
-
-" Switch on lexical highlights
-syntax on
-
-" Enforce black background
-set background=dark
-
-" Colorscheme used for syntax highlights
-colorscheme monokai-phoenix
-
-" Set number of colors at 256
-set t_Co=256
-
-" Show hidden chars
-set list
-
-" show line numbers
-set nu
-
-" Command line always displayed
-set laststatus=2
-
-" Customize display of tab characters >-
-set listchars=tab:>-
-
-" Activate enhanced completion mode in the command line
-set wildmenu
-
-" Customize completion behavior in the command line
-set wildmode=full
-
-" Affiche un curseur sur la totalité de la ligne courante
-set cursorline
-
-" always uses spaces instead of tab characters
+set backspace=2
+set autoindent
+set autoread
+set backupskip=/tmp/*,/private/tmp/*
+set clipboard=unnamed
+set encoding=utf-8
 set expandtab
-
-" set the number of spaces inserted when pressing tab
-set tabstop=2
-autocmd FileType python setlocal tabstop=4
-
-" set the number of spaces inserted/removed when pressing >> or <<
-set shiftwidth=2
-autocmd FileType python setlocal shiftwidth=4
-
-" Enables mouse support in native vim
+set incsearch
+set laststatus=2
+set linebreak
+set list
+set listchars=tab:>-,trail:.,extends:>,precedes:<
 set mouse=a
+set mousefocus
+set nobackup
+set noswapfile
+set number
+set ruler
+set numberwidth=5
+set relativenumber
+set scrolloff=5
+set shiftwidth=2
+set smartcase
+set softtabstop=2
+set splitbelow splitright
+set tabstop=2
+set winwidth=79 winheight=5 winminheight=5 winheight=999
+set textwidth=80
+set colorcolumn=+1
+set termguicolors
+if exists("+spelllang")
+  set spelllang=en_us
+endif
 
-" Does not close buffers on quit.
-" No need to save data before switching buffers.
+" automatically create undodir if it doesn't exist
+set undodir=~/.cache/vim/undo//
+if !isdirectory(expand(&undodir))
+  call mkdir(expand(&undodir), "p")
+endif
+
+command! -bang W w
+command! -bang Q q
+command! -bang Qa qa
+command! -bang Wq wq
+command! -bang Wqa wqa
+
+" REST OF FILE CONTAINS MAPPINGS
+let mapleader = " "
+
+" Vertical split to alternative file
+map <C-w>t <C-w>v<C-w>l:A<CR>
+nmap <Leader>- :sp<CR>
+nmap <Leader>= :vsp<CR>
+
+nmap Q <Nop>
+nmap K <Nop>
+
+" Navigate splits
+map <C-h> <C-w>h
+map <C-l> <C-w>l
+map <C-k> <C-w>k
+map <C-j> <C-w>j
+
+" ZenCoding
+let g:user_emmet_expandabbr_key = '<c-space>'
+
+" open files in directory of current file
+cnoremap %% <c-r>=expand('%:h').'/'<cr>
+map <leader>e :edit %%
+
+" Ayu theme
+" let ayucolor="light"
+let ayucolor="mirage"
+" let ayucolor="dark"
+colorscheme ayu
+" IndentLine
+let g:indentLine_char = '▏'
+let g:indentLine_first_char = '▏'
+let g:indentLine_showFirstIndentLevel = 1
+let g:indentLine_setColors = 0
+
+" Recursice remove
+let g:netrw_localrmdir = "rm -rf"
+let g:netrw_bufsettings = "noma namod nu rnu nobl nowrap ro"
+
+nnoremap <F5> :GundoToggle<CR>
+let g:gundo_width = 60
+let g:gundo_preview_height = 60
+let g:gundo_right = 1
+
+" Ag command line option
+let g:ag_prg="ag --vimgrep --smart-case"
+
+let g:deoplete#enable_at_startup = 1
+let g:neosnippet#enable_completed_snippet = 1
+
+" Prettier
+let g:prettier#exec_cmd_async = 1
+let g:prettier#autoformat = 0
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
+
+" Languages
 set hidden
 
-" show search matches as you type
-set incsearch
+let g:LanguageClient_serverCommands = {
+    \ 'javascript': ['flow-language-server', '--stdio'],
+    \ 'javascript.jsx': ['flow-language-server', '--stdio'],
+    \ 'typescript': ['javascript-typescript-stdio'],
+    \ 'elixir': ['~/language_server.sh']
+    \ }
+nnoremap <F4> :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
-" highlight search terms
-set hlsearch
 
-" ignore case if search pattern is all lowercase,
-" case-sensitive otherwise
-set smartcase
+nnoremap <silent> <Leader>P :Commands<CR>
+nnoremap <silent> <Leader>p :Files<CR>
 
-" Enable deletion of previously entered characters, autoindent, and newlines
-set backspace=2
+" Minisnip
+let g:minisnip_trigger = '<c-e>'
 
-" Autowrite on buffer switch
-set autowriteall
+" Allow per project .nvimrc file to load
+set exrc
+set secure
 
-" Encoding management
-if has("multi_byte")
-  if &termencoding == ""
-    let &termencoding = &encoding
-  endif
-  set encoding=utf-8
-  setglobal fileencoding=utf-8
-  set fileencodings=ucs-bom,utf-8,latin1
-endif
-
-if &term =~ '256color'
-    " Disable Background Color Erase (BCE) so that color schemes
-    " work properly when Vim is used inside tmux and GNU screen.
-    set t_ut=
-endif
-
-"" Temporary files management (swap/undo)
-let vimdir = '$HOME/.vim'
-let myundodir = expand(vimdir . '/undo')
-let myswapdir = expand(vimdir . '/swap')
-let mycachedir = expand(vimdir . '/cache')
-
-let &runtimepath.=','.vimdir
-
-" Directories creation
-call system('mkdir ' . vimdir)
-call system('mkdir ' . myundodir)
-call system('mkdir ' . myswapdir)
-call system('mkdir ' . mycachedir)
-
-" Persistent undo with centralized files
-let &undodir = myundodir
-set undofile
-
-" Centralized swap files location
-let &directory = myswapdir
-
-" Customize font for gvim. The standard one is pretty ugly otherwise
-if has("gui_running")
-    set guifont=Fixed\ Regular\ 12
-else
-    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
-endif
-
-" Add spell checking and automatic wrapping (72 col) to commit messages
-autocmd Filetype gitcommit,rst,markdown setlocal spell textwidth=72
-
-autocmd FileType c,cpp,java set cindent
-
-""""""""""""""""""""""""""""""""""""""""""""""
-"              General mappings
-""""""""""""""""""""""""""""""""""""""""""""""
-
-nmap <leader>c :nohlsearch<CR>
-nmap <leader>m :marks<CR>:g'
-nmap <leader>v :e ~/.vimrc<CR>
-nmap <leader>e :e <c-d>
-nmap <leader>w :w<CR>
-vmap <leader>y "+y
-nmap <leader>p "+p
-nmap <leader>bd :bd<CR>
-nmap <leader>so :so ~/.vimrc<CR>
-vnoremap <leader>j :%!python -mjson.tool<CR>
-
-" NOTE: comments after Bundle command are not allowed..
-
-set splitright
-set splitbelow
-set updatetime=250
-
-" Flake8
-let g:flake8_show_in_gutter = 1
-let g:flake8_show_quickfix=1
-let g:lake8_show_in_file=1
-autocmd BufWritePost *.py call Flake8()
-
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-" Recommended key-mappings.
-" " <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  "return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  return pumvisible() ? "\<C-y> " : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Close popup by <Space>.
-inoremap <expr><Space> pumvisible() ? "\<C-y> " : "\<Space>"
-
-nmap <C-n> :NERDTreeToggle<CR>
-
-" Add an easier mapping for omnifunc
-inoremap <silent> ,, <C-x><C-o>
-
-""""""""""""""""""""""""""""""""""""""""""""""
-"              vim-go settings
-""""""""""""""""""""""""""""""""""""""""""""""
-
-au Filetype go nnoremap   <silent>   <leader>ga   :GoAlternate<CR>
-au Filetype go nnoremap   <silent>   <leader>gb   :GoBuild<CR>
-au Filetype go nnoremap   <silent>   <leader>gc   :GoCoverageToggle<CR>
-au Filetype go nnoremap   <silent>   <leader>gd   :GoDoc<CR>
-au Filetype go nnoremap   <silent>   <leader>ge   :GoDecls<CR>
-au Filetype go nnoremap   <silent>   <leader>ged  :GoDeclsDir<CR>
-au Filetype go nnoremap   <silent>   <leader>gg   :GoGenerate<CR>
-au Filetype go nnoremap   <silent>   <leader>gi   :GoImplements<CR>
-au Filetype go nnoremap   <silent>   <leader>gt   :GoTest<CR>
-nnoremap   <silent>   <leader>t   :TagbarToggle<CR>
-
-let g:go_auto_type_info = 1
-let g:go_metalinter_autosave = 1

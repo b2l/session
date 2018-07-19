@@ -7,11 +7,8 @@ sudo dnf -y install dnf-plugins-core
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 
 sudo dnf install -y \
-  ansible \
   arandr \
-  chromium \
   cmake \
-  conky \
   ctags \
   dmenu \
   docker \
@@ -20,7 +17,6 @@ sudo dnf install -y \
   feh \
   fuse-sshfs \
   gcc-c++ \
-  gnome-tweak-tool \
   htop \
   httpie \
   i3 \
@@ -30,23 +26,13 @@ sudo dnf install -y \
   lcov \
   libtool \
   meld \
-  mosquitto \
-  nmap \
-  python2-ipython \
-  python3-devel \
-  python3-ipython \
-  python-devel \
-  ruby \
-  ruby-devel \
-  sqlite \
   syncthing \
   tig \
   tmux \
   util-linux-user \
-  vim-enhanced \
-  vim-X11 \
+  neovim \
+  NetworkManager \
   xbacklight \
-  yp-tools \
   zsh
 
 sudo dnf config-manager --set-enabled google-chrome
@@ -70,36 +56,8 @@ sudo systemctl start docker
 
 mkdir -p $HOME/.local/bin
 
-set_current_version() {
-  echo "Setting current $1 to $2"
-  rm -f $HOME/.local/bin/$1
-  ln -sf $HOME/.local/bin/$1-$2 $HOME/.local/bin/$1
-}
-
-# Go
-get_go () {
-  echo "Getting Go $1"
-  if [[ ! -d "$HOME/.local/bin/go-$1" ]]; then
-    wget -O $HOME/go.tar.gz https://dl.google.com/go/go$1.linux-amd64.tar.gz
-    tar xvzf $HOME/go.tar.gz -C $HOME
-    mv $HOME/go $HOME/.local/bin/go-$1
-    rm -rf $HOME/go $HOME/go.tar.gz
-  fi
-}
-
-get_go "1.10.2"
-get_go "1.9.2"
-get_go "1.8.5"
-
-set_current_version "go" "1.10.2"
-
-mkdir -p $HOME/Data/go
-
 # Pip install
 pip install --upgrade --user awscli flake8 boto gnupg hvac minio pip consulate
-
-# Gem install
-gem install travis
 
 # Zprezto
 if [ ! -d "$HOME/.zprezto" ]; then
@@ -138,135 +96,11 @@ make
 sudo make install
 cd $TMP
 
-## Install tools
-
-# kubectl
-get_kubectl() {
-  echo "Getting Kubectl $1"
-  if [[ ! -f "$HOME/.local/bin/kubectl-$1" ]]; then
-    curl -LO "https://storage.googleapis.com/kubernetes-release/release/v$1/bin/linux/amd64/kubectl"
-    chmod +x kubectl
-    mv kubectl $HOME/.local/bin/kubectl-$1
-  fi
-}
-
-get_kubectl "1.9.8"
-get_kubectl "1.9.1"
-get_kubectl "1.7.12"
-get_kubectl "1.8.6"
-
-set_current_version "kubectl" "1.9.8"
-
-# helm
-get_helm() {
-  echo "Getting Helm $1"
-  if [[ ! -f "$HOME/.local/bin/helm-$1" ]]; then
-    wget -O $HOME/helm.tar.gz "https://storage.googleapis.com/kubernetes-helm/helm-v$1-linux-amd64.tar.gz"
-    tar xvzf $HOME/helm.tar.gz -C $HOME
-    mv $HOME/linux-amd64/helm $HOME/.local/bin/helm-$1
-    rm -rf $HOME/linux-amd64 $HOME/helm.tar.gz
-  fi
-}
-
-get_helm "2.9.1"
-get_helm "2.8.2"
-get_helm "2.8.1"
-get_helm "2.8.0"
-get_helm "2.7.2"
-get_helm "2.6.2"
-
-set_current_version "helm" "2.8.2"
-
-helm init --client-only
-if [[ -z $(helm plugin list | grep s3) ]]; then
-  helm plugin install https://github.com/hypnoglow/helm-s3.git --version 0.5.2
-fi
-
-#kubeless
-get_kubeless() {
-  echo "Getting kubeless $1"
-  if [[ ! -f "$HOME/.local/bin/kubeless-$1" ]]; then
-    wget -O "$HOME/kubeless.zip" "https://github.com/kubeless/kubeless/releases/download/v$1/kubeless_linux-amd64.zip"
-    unzip "$HOME/kubeless.zip" -d $HOME
-    mv "$HOME/bundles/kubeless_linux-amd64/kubeless" "$HOME/.local/bin/kubeless-$1"
-    rm -rf "$HOME/kubeless.zip" "$HOME/bundles"
-  fi
-}
-
-get_kubeless "0.4.0"
-get_kubeless "0.3.1"
-set_current_version "kubeless" "0.4.0"
-
-# kops
-get_kops() {
-  echo "Getting kops $1"
-  if [[ ! -f "$HOME/.local/bin/kops-$1" ]]; then
-    wget -O $HOME/kops https://github.com/kubernetes/kops/releases/download/$1/kops-linux-amd64
-    chmod +x $HOME/kops
-    mv $HOME/kops $HOME/.local/bin/kops-$1
-  fi
-}
-
-get_kops "1.9.0"
-get_kops "1.8.0"
-get_kops "1.7.1"
-
-set_current_version "kops" "1.8.0"
-
-# # Vault
-get_vault() {
-  echo "Getting vault $1"
-  if [[ ! -f "$HOME/.local/bin/vault-$1" ]]; then
-    wget -O $HOME/vault.zip https://releases.hashicorp.com/vault/$1/vault_$1_linux_amd64.zip
-    unzip $HOME/vault.zip -d $HOME
-    mv $HOME/vault $HOME/.local/bin/vault-$1
-    rm -f $HOME/vault.zip
-  fi
-}
-
-get_vault "0.10.1"
-get_vault "0.10.0"
-get_vault "0.9.5"
-get_vault "0.9.1"
-get_vault "0.8.3"
-
-set_current_version "vault" "0.10.1"
-
-# # Terraform
-get_terraform() {
-  echo "Getting terraform $1"
-  if [[ ! -f "$HOME/.local/bin/terraform-$1" ]]; then
-    wget -O $HOME/terraform.zip https://releases.hashicorp.com/terraform/$1/terraform_$1_linux_amd64.zip
-    unzip $HOME/terraform.zip -d $HOME
-    mv $HOME/terraform $HOME/.local/bin/terraform-$1
-    rm -f $HOME/terraform.zip
-  fi
-}
-
-get_terraform "0.11.7"
-
-set_current_version "terraform" "0.11.7"
-
 # Create syncthing service
 mkdir -p $HOME/.config/systemd/user/
 sudo wget -O $HOME/.config/systemd/user/syncthing.service https://raw.githubusercontent.com/syncthing/syncthing/master/etc/linux-systemd/user/syncthing.service
 systemctl --user enable syncthing.service
 systemctl --user start syncthing.service
-
-# Exercism
-get_exercism () {
-  echo "Getting exercism $1"
-  if [[ ! -f "$HOME/.local/bin/exercism-$1" ]]; then
-    wget -O $HOME/exercism.tgz https://github.com/exercism/cli/releases/download/v$1/exercism-linux-64bit.tgz
-    tar xvzf $HOME/exercism.tgz -C $HOME
-    mv $HOME/exercism $HOME/.local/bin/exercism-$1
-    rm -f $HOME/exercism.tgz
-  fi
-}
-
-get_exercism "2.4.1"
-
-set_current_version "exercism" "2.4.1"
 
 
 # Create symlinks for config files
@@ -275,23 +109,25 @@ ln -sf $PWD/config/tmux.conf $HOME/.tmux.conf
 
 echo "Create symlink for zprezto configuration"
 ln -sf $PWD/config/zpreztorc $HOME/.zpreztorc
-ln -sf $PWD/config/zshenv $HOME/.zshenv
 ln -sf $PWD/config/zshrc $HOME/.zshrc
 
 echo "Create symlink for gitconfig"
 ln -sf $PWD/config/gitconfig $HOME/.gitconfig
 
-echo "Create symlink for vim"
+echo "Create symlink for neovim"
+ln -sf $PWD/vim/vimrc $HOME/.config/nvim/init.vim
 ln -sf $PWD/vim/vimrc $HOME/.vimrc
-ln -sf $PWD/vim/monokai-phoenix.vim $HOME/.vim/colors/monokai-phoenix.vim
-vimx +PluginInstall +qall
+ln -sf $PWD/vim/vim $HOME/.vim
+nvim +PlugInstall +qall
+nvim +UpdateRemotePlugins +qall
 
 echo "Create symlink for i3"
 ln -sf $PWD/config/i3-config $HOME/.config/i3/config
+ln -sf $PWD/config/i3status.conf $HOME/.i3status.conf
 
-echo "Create symlink for x509"
-sudo ln -sf $PWD/scripts/x509 /usr/bin/x509
+echo "Create symlink for .bin"
+ls -sf $PWD/bin $HOME/.bin
 
 chsh -s /bin/zsh
 
-setxkbmap fr
+setxkbmap us

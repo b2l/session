@@ -6,52 +6,6 @@
 #
 
 # Ensure that a non-login, non-interactive shell has a defined environment.
-if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
+if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
-# Add local pyhton path
-export GOROOT=$HOME/.local/bin/go
-export GOPATH=$HOME/Data/go
-export PATH=$PATH:$HOME/.local/bin:$HOME/.local/bin/go/bin:$GOPATH/bin:$HOME/Data/scripts
-
-# vim
-alias vi='vimx'
-alias vim='vimx'
-
-#fasd
-eval "$(fasd --init auto)"
-alias a='fasd -a'        # any
-alias s='fasd -si'       # show / search / select
-alias d='fasd -d'        # directory
-alias f='fasd -f'        # file
-alias sd='fasd -sid'     # interactive directory selection
-alias sf='fasd -sif'     # interactive file selection
-alias z='fasd_cd -d'     # cd, same functionality as j in autojump
-alias zz='fasd_cd -d -i' # cd with interactive selection
-alias v='f -e vim'       # quick opening files with vim
-
-# git
-alias ggr="git graph"
-alias ggra="git graph --all"
-alias subup="git submodule sync && git submodule update --init --recursive"
-
-# watch
-alias wa='watch -n 0.1'
-alias wad='watch -n 1 -d'
-
-alias t='tig'
-#Docker
-alias dk='docker'
-
-#Syncthing
-alias sync-browser='syncthing -browser-only'
-
-# Vault
-export VAULT_ADDR=https://vault.eu.easymile.com:8200
-
-# Kubernetes
-export KOPS_STATE_STORE=s3://easymile-dev-clusters
-
-alias randpass='openssl rand -base64 32 | tr -d /=+ | cut -c -32'
-alias ls='exa'
-alias fini='notify-send "finished" "The task is finished"'

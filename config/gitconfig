@@ -1,32 +1,25 @@
 [user]
-	email = alexandre.ledit@easymile.com
-	name = Alexandre Ledit
-
-[push]
-	default = simple
-
-[alias]
-    up = pull origin
-    st = status
-    di = diff --word-diff
-    co = checkout
-    ci = commit
-    br = branch
-    sta = stash
-    unadd = reset HEAD
-    logl = log --pretty=oneline --abbrev-commit
-    unadd = reset HEAD
-    graph = log --date-order --date=iso --graph --pretty=format:'%C(auto)%h%Creset %Cblue%an%Creset %Cgreen%ar%Creset %C(auto)%s %d'
-
+  email = nicolas.medda@easymile.com
+  name = Nicolas Medda
 [core]
-    pager = less
-    editor = vimx
+  autocrlf = false
+  excludesfile = ~/.gitignore
+[gui]
+  encoding = utf-8
+[color]
+  ui = true
+[alias]
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  grog = log --graph --abbrev-commit --decorate --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)'
+  st = status
+  ci = commit
+  co = checkout
+  br = branch
+  df = diff
+  plz = push --force-with-lease
+[pull]
+  rebase = true
 [push]
-    default = simple
-[merge]
-    conflictstyle = diff3
-    tool = vimdiff
-[fetch]
-    prune = true
-[diff]
-    tool = vimdiff
+  default = simple
+[branch]
+  autosetuprebase = always
