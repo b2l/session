@@ -40,11 +40,11 @@ Plug 'slashmili/alchemist.vim'
 
 " Javascript Support
 " Plug 'pangloss/vim-javascript'
-Plug 'ternjs/tern_for_vim'
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm i -g tern' }
-Plug 'wokalski/autocomplete-flow'
+" Plug 'ternjs/tern_for_vim'
+" Plug 'carlitux/deoplete-ternjs', { 'do': 'npm i -g tern' }
+" Plug 'wokalski/autocomplete-flow'
 Plug 'prettier/vim-prettier'
-Plug 'flowtype/vim-flow'
+" Plug 'flowtype/vim-flow'
 Plug 'mxw/vim-jsx'
 
 " Scss Support
