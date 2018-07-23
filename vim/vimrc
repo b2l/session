@@ -131,7 +131,8 @@ nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 
 nnoremap <silent> <Leader>P :Commands<CR>
-nnoremap <silent> <Leader>p :Files<CR>
+nnoremap <silent> <Leader>p :GFiles<CR>
+nnoremap <silent> <Leader>o :Files<CR>
 
 " Minisnip
 let g:minisnip_trigger = '<c-e>'
