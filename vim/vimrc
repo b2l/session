@@ -6,27 +6,19 @@ endif
 
 source ~/.vim/plugins.vim
 
-set backspace=2
-set autoindent
-set autoread
 set backupskip=/tmp/*,/private/tmp/*
 set clipboard=unnamed
-set encoding=utf-8
 set expandtab
 set incsearch
-set laststatus=2
 set linebreak
 set list
-set listchars=tab:>-,trail:.,extends:>,precedes:<
 set mouse=a
 set mousefocus
 set nobackup
 set noswapfile
 set number
-set ruler
 set numberwidth=5
 set relativenumber
-set scrolloff=5
 set shiftwidth=2
 set smartcase
 set softtabstop=2
@@ -88,6 +80,10 @@ let g:indentLine_first_char = '▏'
 let g:indentLine_showFirstIndentLevel = 1
 let g:indentLine_setColors = 0
 
+" Airline
+let g:airline_section_b = ""
+let g:airline_skip_empty_sections = 1
+
 " Recursice remove
 let g:netrw_localrmdir = "rm -rf"
 let g:netrw_bufsettings = "noma namod nu rnu nobl nowrap ro"
@@ -114,15 +110,17 @@ set hidden
 
     " 'javascript': ['flow-language-server', '--stdio'],
 let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['flow', '--lazy-mode', 'lsp'],
-    \ 'javascript.jsx': ['flow', '--lazy-mode', 'lsp'],
+    \ 'javascript': ['flow', 'lsp'],
+    \ 'javascript.jsx': ['flow', 'lsp'],
     \ 'typescript': ['javascript-typescript-stdio'],
-    \ 'elixir': ['~/.elixir-ls/language_server.sh']
+    \ 'elixir': ['~/.elixir-ls/language_server.sh'],
+    \ 'python': ['pyls']
     \ }
 let g:LanguageClient_rootMarkers = {
       \ 'javascript': ['package.json'],
       \ 'javascript.jsx': ['package.json'],
       \}
+
 nnoremap <F4> :call LanguageClient_contextMenu()<CR>
 " Or map each action separately
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>

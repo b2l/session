@@ -45,6 +45,8 @@ cd ~/projects/fleet-management/dev &&\
 && cd -"
 alias enter="create_ssh_agent_link && ~/projects/fleet-management/dev/enter zsh"
 
+alias prepare_container="yarn global add flow-language-server && wget -o /tmp/elixir-ls.zip https://github.com/JakeBecker/elixir-ls/dowload/v0.2.19/elixir-ls.zip && unzip /tmp/elixir-ls.zip -d ~/.elixir-ls"
+
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 alias dl="cd ~/Downloads"
