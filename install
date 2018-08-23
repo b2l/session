@@ -6,6 +6,7 @@ sudo dnf -y install dnf-plugins-core
 
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 sudo dnf copr enable yaroslav/i3desktop -y
+sudo dnf install https://downloads.ulyaoth.net/rpm/ulyaoth-latest.fedora.x86_64.rpm -y
 
 sudo dnf install -y \
   arandr \
@@ -35,6 +36,8 @@ sudo dnf install -y \
   NetworkManager \
   xbacklight \
   rofi \
+  scrot \
+	spotify \
   zsh
 
 sudo dnf config-manager --set-enabled google-chrome
