@@ -38,6 +38,7 @@ sudo dnf install -y \
   rofi \
   scrot \
 	spotify \
+  keepass \
   zsh
 
 sudo dnf config-manager --set-enabled google-chrome
@@ -72,6 +73,9 @@ if [ ! -d "$HOME/.zprezto-contrib" ]; then
   git clone --recursive https://github.com/AlexDouze/prezto-contrib.git "${ZDOTDIR:-$HOME}/.zprezto-contrib"
 fi
 
+# Slack
+wget -O /tmp/slack.rpm https://downloads.slack-edge.com/linux_releases/slack-3.2.1-0.1.fc21.x86_64.rpm
+sudo rpm -i /tmp/slack.rpm
 
 # Fasd
 if [[ ! -x "$(command -v fasd)" ]]; then
@@ -90,16 +94,9 @@ if [ ! -d "$HOME/.vim/bundle/vundle" ]; then
     mkdir -p ~/.vim/colors
 fi
 
-# Lastpass
-if [[ ! -x "$(command -v lpass)" ]]; then
-  git clone https://github.com/lastpass/lastpass-cli.git $HOME/Data/lastpass-cli
-fi
-TMP=$(pwd)
-cd $HOME/Data/lastpass-cli
-git pull
-make
-sudo make install
-cd $TMP
+# Keepass 
+sudo wget -O /usr/lib/keepass/KeePassHttp.plgx https://raw.github.com/pfn/keepasshttp/master/KeePassHttp.plgx
+chmod 644 /usr/lib/keepass/KeePassHttp.plgx
 
 # Create syncthing service
 mkdir -p $HOME/.config/systemd/user/
