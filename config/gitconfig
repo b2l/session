@@ -17,7 +17,6 @@
   ci = commit
   co = checkout
   br = branch
-  df = diff
   plz = push --force-with-lease
 [pull]
   rebase = true

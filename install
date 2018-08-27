@@ -119,8 +119,11 @@ echo "Create symlink for tmux configuration"
 ln -sf $PWD/config/tmux.conf $HOME/.tmux.conf
 
 echo "Create symlink for zprezto configuration"
+mkdir $HOME/.zshrc.d
 ln -sf $PWD/config/zpreztorc $HOME/.zpreztorc
 ln -sf $PWD/config/zshrc $HOME/.zshrc
+ln -sf $PWD/config/yarn-completion.bash $HOME/.zshrc.d/
+ln -sf $PWD/config/dircolors-solarized.ansi-light $HOME/.zshrc.d/
 
 echo "Create symlink for gitconfig"
 ln -sf $PWD/config/gitconfig $HOME/.gitconfig

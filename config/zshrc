@@ -18,6 +18,10 @@ export VISUAL=nvim
 autoload bashcompinit
 bashcompinit
 
+if [[ -s "~/.zshrc.d/yarn-completion.bash" ]]; then
+  source "~/.zshrc.d/yarn-completion.bash"
+fi
+
 eval `dircolors ~/.zshrc.d/dircolors-solarized.ansi-light`
 
 create_ssh_agent_link() {
