@@ -77,23 +77,6 @@ fi
 wget -O /tmp/slack.rpm https://downloads.slack-edge.com/linux_releases/slack-3.2.1-0.1.fc21.x86_64.rpm
 sudo rpm -i /tmp/slack.rpm
 
-# Fasd
-if [[ ! -x "$(command -v fasd)" ]]; then
-  wget https://github.com/clvv/fasd/tarball/1.0.1
-  tar xvzf 1.0.1
-  rm -f 1.0.1
-  cd clvv-fasd-4822024
-  sudo make install
-  cd ..
-  rm -rf clvv-fasd-4822024
-fi
-
-# Vim Vundle
-if [ ! -d "$HOME/.vim/bundle/vundle" ]; then
-    git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/vundle
-    mkdir -p ~/.vim/colors
-fi
-
 # Keepass 
 sudo wget -O /usr/lib/keepass/KeePassHttp.plgx https://raw.github.com/pfn/keepasshttp/master/KeePassHttp.plgx
 chmod 644 /usr/lib/keepass/KeePassHttp.plgx
