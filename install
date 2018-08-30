@@ -6,7 +6,6 @@ sudo dnf -y install dnf-plugins-core
 
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 sudo dnf copr enable yaroslav/i3desktop -y
-sudo dnf install https://downloads.ulyaoth.net/rpm/ulyaoth-latest.fedora.x86_64.rpm -y
 
 sudo dnf install -y \
   arandr \
@@ -38,7 +37,7 @@ sudo dnf install -y \
   rofi \
   scrot \
 	spotify \
-  keepass \
+  keepassxc \
   zsh
 
 sudo dnf config-manager --set-enabled google-chrome
@@ -76,10 +75,6 @@ fi
 # Slack
 wget -O /tmp/slack.rpm https://downloads.slack-edge.com/linux_releases/slack-3.2.1-0.1.fc21.x86_64.rpm
 sudo rpm -i /tmp/slack.rpm
-
-# Keepass 
-sudo wget -O /usr/lib/keepass/KeePassHttp.plgx https://raw.github.com/pfn/keepasshttp/master/KeePassHttp.plgx
-chmod 644 /usr/lib/keepass/KeePassHttp.plgx
 
 # Create syncthing service
 mkdir -p $HOME/.config/systemd/user/
