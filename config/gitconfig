@@ -18,6 +18,7 @@
   co = checkout
   br = branch
   plz = push --force-with-lease
+  up = "!git co develop && git pull && git co - && git rebase develop"
 [pull]
   rebase = true
 [push]

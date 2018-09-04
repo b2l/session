@@ -1,12 +1,18 @@
 #!/bin/bash
 set -e
 
+echo "================="
+echo "Updating packages"
 sudo dnf --refresh update -y
 sudo dnf -y install dnf-plugins-core
 
+echo "================="
+echo "Adding repositories"
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 sudo dnf copr enable yaroslav/i3desktop -y
 
+echo "================="
+echo "Installing packages"
 sudo dnf install -y \
   arandr \
   cmake \
@@ -43,13 +49,18 @@ sudo dnf install -y \
 sudo dnf config-manager --set-enabled google-chrome
 sudo dnf install -y google-chrome-stable
 
+echo "================="
+echo "Installing keybase"
 if [[ ! -x "$(command -v keybase)" ]]; then
  sudo dnf install -y https://prerelease.keybase.io/keybase_amd64.rpm
 fi
 
+echo "================="
+echo "Installing Development libraries and tools"
 sudo dnf group install -y "Development Libraries" "Development Tools"
 
-# Enable and start docker daemon
+echo "================="
+echo "Enabling and starting docker daemon"
 if getent group docker; then
   echo "docker group exist"
 else
@@ -61,10 +72,12 @@ sudo systemctl start docker
 
 mkdir -p $HOME/.local/bin
 
-# Pip install
+echo "================="
+echo "Installing python packages"
 pip install --upgrade --user awscli flake8 boto gnupg hvac minio pip consulate
 
-# Zprezto
+echo "================="
+echo "Installing Zprezto"
 if [ ! -d "$HOME/.zprezto" ]; then
 	git clone --recursive git@github.com:AlexDouze/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 fi
@@ -72,29 +85,29 @@ if [ ! -d "$HOME/.zprezto-contrib" ]; then
   git clone --recursive https://github.com/AlexDouze/prezto-contrib.git "${ZDOTDIR:-$HOME}/.zprezto-contrib"
 fi
 
-# Slack
-wget -O /tmp/slack.rpm https://downloads.slack-edge.com/linux_releases/slack-3.2.1-0.1.fc21.x86_64.rpm
-sudo rpm -i /tmp/slack.rpm
-
-# Create syncthing service
+echo "================="
+echo "Setting up Syncthing service"
 mkdir -p $HOME/.config/systemd/user/
 sudo wget -O $HOME/.config/systemd/user/syncthing.service https://raw.githubusercontent.com/syncthing/syncthing/master/etc/linux-systemd/user/syncthing.service
 systemctl --user enable syncthing.service
 systemctl --user start syncthing.service
 
-# Greenclip clipboard manager
+echo "================="
+echo "Installing and setting up Greenclip service"
 sudo wget https://github.com/erebe/greenclip/releases/download/3.0/greenclip -O /usr/bin/greenclip
 sudo chmod +x /usr/bin/greenclip
 ln -sf $PWD/services/greenclip.service $HOME/.config/systemd/user/greenclip.service
 systemctl --user enable greenclip
 systemctl --user start greenclip
 
-# Create symlinks for config files
+echo "================="
+echo "Creating symlinks for config files"
+
 echo "Create symlink for tmux configuration"
 ln -sf $PWD/config/tmux.conf $HOME/.tmux.conf
 
 echo "Create symlink for zprezto configuration"
-mkdir $HOME/.zshrc.d
+mkdir -p $HOME/.zshrc.d
 ln -sf $PWD/config/zpreztorc $HOME/.zpreztorc
 ln -sf $PWD/config/zshrc $HOME/.zshrc
 ln -sf $PWD/config/yarn-completion.bash $HOME/.zshrc.d/
@@ -117,6 +130,11 @@ ln -sf $PWD/config/i3status.conf $HOME/.i3status.conf
 echo "Create symlink for .bin"
 ls -sf $PWD/bin $HOME/.bin
 
+
+echo "================="
+echo "Changing default shell"
 chsh -s /bin/zsh
 
+echo "================="
+echo "Set keyboard map"
 setxkbmap us
