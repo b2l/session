@@ -44,6 +44,10 @@ sudo dnf install -y \
   scrot \
 	spotify \
   keepassxc \
+  ranger \
+  w3m \
+  w3m-img \
+  compton \
   zsh
 
 sudo dnf config-manager --set-enabled google-chrome
@@ -74,7 +78,7 @@ mkdir -p $HOME/.local/bin
 
 echo "================="
 echo "Installing python packages"
-pip install --upgrade --user awscli flake8 boto gnupg hvac minio pip consulate
+pip3 install --upgrade --user awscli flake8 boto gnupg hvac minio pip consulate pywal
 
 echo "================="
 echo "Installing Zprezto"
@@ -127,6 +131,12 @@ echo "Create symlink for i3"
 ln -sf $PWD/config/i3-config $HOME/.config/i3/config
 ln -sf $PWD/config/i3status.conf $HOME/.i3status.conf
 
+echo "Create symlink for ranger"
+ln -sf $PWD/config/ranger $HOME/.config/ranger
+
+echo "Create symlink for compton"
+ln -sf $PWD/config/compton.conf $HOME/.config/compton.conf
+
 echo "Create symlink for .bin"
 ls -sf $PWD/bin $HOME/.bin
 
@@ -134,7 +144,3 @@ ls -sf $PWD/bin $HOME/.bin
 echo "================="
 echo "Changing default shell"
 chsh -s /bin/zsh
-
-echo "================="
-echo "Set keyboard map"
-setxkbmap us

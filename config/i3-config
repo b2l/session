@@ -85,10 +85,10 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-# bindsym $mod+Shift+space floating toggle
+bindsym $mod+Ctrl+space floating toggle
 
 # change focus between tiling / floating windows
-# bindsym $mod+space focus mode_toggle
+bindsym $mod+Ctrl+Shift+space focus mode_toggle
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -210,6 +210,7 @@ bindsym $mod+Shift+p scratchpad show
 bindsym $mod+Shift+Tab exec "~/.bin/toggleKeyboard"
 
 # startup
+exec --no-startup-id compton --config $HOME/.config/compton.conf -b
 exec --no-startup-id feh --bg-scale ~/Dowloads/casey-horner-353940-unsplash.jpg
 exec gnome-terminal
 exec google-chrome
