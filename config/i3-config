@@ -213,4 +213,4 @@ bindsym $mod+Shift+Tab exec "~/.bin/toggleKeyboard"
 exec --no-startup-id compton --config $HOME/.config/compton.conf -b
 exec --no-startup-id feh --bg-scale ~/Dowloads/casey-horner-353940-unsplash.jpg
 exec gnome-terminal
-exec google-chrome
+exec firefox
