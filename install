@@ -123,6 +123,7 @@ ln -sf $PWD/config/gitconfig $HOME/.gitconfig
 echo "Create symlink for neovim"
 ln -sf $PWD/vim/vimrc $HOME/.config/nvim/init.vim
 ln -sf $PWD/vim/vimrc $HOME/.vimrc
+rm -rf $HOME/.vim
 ln -sf $PWD/vim/vim $HOME/.vim
 nvim +PlugInstall +qall
 nvim +UpdateRemotePlugins +qall
