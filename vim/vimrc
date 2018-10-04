@@ -8,8 +8,8 @@ source ~/.vim/plugins.vim
 
 set backupskip=/tmp/*,/private/tmp/*
 set clipboard=unnamed
+set colorcolumn=+1
 set expandtab
-set incsearch
 set linebreak
 set list
 set mouse=a
@@ -24,19 +24,14 @@ set smartcase
 set softtabstop=2
 set splitbelow splitright
 set tabstop=2
-set winwidth=79 winheight=5 winminheight=5 winheight=999
-set textwidth=80
-set colorcolumn=+1
 set termguicolors
+set textwidth=80
+set wildmenu
 set wildmode=longest:full,full
+set winwidth=79 winheight=5 winminheight=5 winheight=999
+
 if exists("+spelllang")
   set spelllang=en_us
-endif
-
-" automatically create undodir if it doesn't exist
-set undodir=~/.cache/vim/undo//
-if !isdirectory(expand(&undodir))
-  call mkdir(expand(&undodir), "p")
 endif
 
 command! -bang W w
@@ -47,6 +42,7 @@ command! -bang Wqa wqa
 
 " REST OF FILE CONTAINS MAPPINGS
 let mapleader = " "
+let maplocalleader = ","
 
 set pastetoggle=<F9>
 
@@ -55,8 +51,15 @@ nmap Q @q
 nnoremap Q @q
 
 "" Quickfix
+nnoremap <S-F1>  :cc<CR>
 nnoremap ]q :cnext<cr>zz
+nnoremap <F2>    :cnext<CR>
 nnoremap [q :cprev<cr>zz
+nnoremap <S-F2>  :cprev<CR>
+nnoremap <F3>    :cnfile<CR>
+nnoremap <S-F3>  :cpfile<CR>
+nnoremap <F4>    :cfirst<CR>
+nnoremap <S-F4>  :clast<CR>
 nnoremap ]l :lnext<cr>zz
 nnoremap [l :lprev<cr>zz
 
@@ -72,11 +75,12 @@ xnoremap <silent> <A-Right> >gv
 xnoremap < <gv
 xnoremap > >gv
 
+" ctrl+l redraws the screen and removes any search highlighting
+nnoremap <silent> <leader>L :nohl<CR><C-l>
+
 " <leader>c Close quickfix
 nnoremap <leader>c :cclose<bar>lclose<cr>
 
-" Vertical split to alternative file
-map <C-w>t <C-w>v<C-w>l:A<CR>
 nmap <Leader>- :sp<CR>
 nmap <Leader>= :vsp<CR>
 
@@ -91,13 +95,11 @@ let g:user_emmet_expandabbr_key = '<c-space>'
 
 " open files in directory of current file
 cnoremap %% <c-r>=expand('%:h').'/'<cr>
-map <leader>e :edit %%
 
-" Ayu theme
-" let ayucolor="light"
+" Ayu theme, one of: "light" | "mirage" | "dark"
 let ayucolor="mirage"
-" let ayucolor="dark"
 colorscheme ayu
+
 " IndentLine
 let g:indentLine_char = '▏'
 let g:indentLine_first_char = '▏'
@@ -112,51 +114,15 @@ let g:airline_skip_empty_sections = 1
 let g:netrw_localrmdir = "rm -rf"
 let g:netrw_bufsettings = "noma namod nu rnu nobl nowrap ro"
 
-nnoremap <F5> :GundoToggle<CR>
-let g:gundo_width = 60
-let g:gundo_preview_height = 60
-let g:gundo_right = 1
-
 " Ag command line option
 let g:ag_prg="ag --vimgrep --smart-case"
-
-let g:deoplete#enable_at_startup = 1
-let g:neosnippet#enable_completed_snippet = 1
-
-" Prettier
-let g:prettier#exec_cmd_async = 1
-let g:prettier#autoformat = 0
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
-
-" Languages
-set hidden
-
-let g:LanguageClient_serverCommands = {
-    \ 'javascript': ['flow', 'lsp'],
-    \ 'javascript.jsx': ['flow', 'lsp'],
-    \ 'typescript': ['javascript-typescript-stdio'],
-    \ 'elixir': ['~/.elixir-ls/language_server.sh'],
-    \ 'python': ['pyls']
-    \ }
-let g:LanguageClient_rootMarkers = {
-      \ 'javascript': ['package.json'],
-      \ 'javascript.jsx': ['package.json'],
-      \}
-
-nnoremap <F4> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
-
 
 " FZF
 let $FZF_DEFAULT_OPTS .= ' --inline-info'
 nnoremap <silent> <Leader>P :Commands<CR>
 nnoremap <silent> <Leader>p :GFiles<CR>
 nnoremap <silent> <Leader>o :Files<CR>
+"
 " Hide statusline of terminal buffer
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
@@ -181,10 +147,32 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
-" Minisnip
-let g:minisnip_trigger = '<c-e>'
+set hidden
+
+" ALE stuff
+let g:ale_fix_on_save = 1
+let g:ale_completion_enabled = 1
+" let g:ale_open_list = 1
+let g:ale_keep_list_window_open = 1
+
+let g:ale_linters = {
+  \ 'javascript': ['eslint', 'flow-language-server'],
+  \ 'typecscript': ['eslint', 'tslint', 'tsserver'],
+  \ 'html': []
+  \}
+
+let g:ale_fixers = {
+  \ 'javascript': ['eslint', 'prettier'],
+  \ 'typecscript': ['prettier', 'tsserver'],
+  \ 'python': ['autopep8'],
+  \ 'elixir': ['mix_format']
+  \ }
+
+map gd <Plug>(ale_go_to_definition)<CR>
+map <c-g>  <Plug>(ale_go_to_definition_in_tab)<CR>
+map <F12> <Plug>(ale_find_references)<CR>
+map K <Plug>(ale_hover)
+" nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
 " Allow per project .nvimrc file to load
 set exrc
-set secure
-
