@@ -1,0 +1,13 @@
+ --device /dev/fuse
+ -v /tmp/.X11-unix:/tmp/.X11-unix
+ -e DISPLAY=:0
+-v /home/nmedda/.zshrc:/home/dev/.zshrc.d/__host.zshrc
+-v /home/nmedda/projects/:/home/dev/projects
+-v /home/nmedda/.vimrc:/home/dev/.vimrc
+-v /home/nmedda/.vimrc:/home/dev/.config/nvim/init.vim
+-v /home/nmedda/.vim:/home/dev/.vim
+-v /home/nmedda/.zprezto:/home/dev/.zprezto
+-v /home/nmedda/.zlogin:/home/dev/.zlogin
+-v /home/nmedda/.zlogout:/home/dev/.zlogout
+-v /home/nmedda/.zpreztorc:/home/dev/.zpreztorc
+-v /home/nmedda/.zshenv:/home/dev/.zshenv

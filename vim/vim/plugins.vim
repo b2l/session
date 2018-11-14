@@ -31,10 +31,10 @@ Plug 'elixir-editors/vim-elixir'
 Plug 'avdgaag/vim-phoenix'
 
 " Javascript Support
-Plug 'prettier/vim-prettier'
-Plug 'flowtype/vim-flow'
-Plug 'mxw/vim-jsx'
-Plug 'leafgarland/typescript-vim', {'for': ['typescript', 'typescript.tsx']}
+" Plug 'prettier/vim-prettier'
+" Plug 'flowtype/vim-flow'
+" Plug 'mxw/vim-jsx'
+" Plug 'leafgarland/typescript-vim', {'for': ['typescript', 'typescript.tsx']}
 Plug 'Galooshi/vim-import-js', {'for': ['javascript', 'javascript.tsx'], 'do': 'yarn global add import-js@3.1.0'}
 
 

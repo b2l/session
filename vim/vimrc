@@ -6,7 +6,6 @@ endif
 
 source ~/.vim/plugins.vim
 
-set backupskip=/tmp/*,/private/tmp/*
 set clipboard=unnamed
 set colorcolumn=+1
 set expandtab
@@ -18,10 +17,10 @@ set nobackup
 set noswapfile
 set number
 set numberwidth=5
-set relativenumber
 set shiftwidth=2
 set smartcase
 set softtabstop=2
+set cursorline cursorcolumn
 set splitbelow splitright
 set tabstop=2
 set termguicolors
@@ -29,6 +28,22 @@ set textwidth=80
 set wildmenu
 set wildmode=longest:full,full
 set winwidth=79 winheight=5 winminheight=5 winheight=999
+
+" Undo
+silent !mkdir ~/.vim/undodir > /dev/null 2>&1
+set undofile
+set undodir=~/.vim/undodir
+
+" Session management
+let g:session_directory = "~/.config/nvim/session"
+let g:session_autoload = "no"
+let g:session_autosave = "no"
+let g:session_command_aliases = 1
+
+" Fold
+set foldenable
+set foldmethod=syntax
+set foldlevelstart=20
 
 if exists("+spelllang")
   set spelllang=en_us
@@ -44,6 +59,13 @@ command! -bang Wqa wqa
 let mapleader = " "
 let maplocalleader = ","
 
+nmap < [
+nmap > ]
+omap < [
+omap > ]
+xmap < [
+xmap > ]
+
 set pastetoggle=<F9>
 
 "" qq to record Q to replay
@@ -51,15 +73,8 @@ nmap Q @q
 nnoremap Q @q
 
 "" Quickfix
-nnoremap <S-F1>  :cc<CR>
 nnoremap ]q :cnext<cr>zz
-nnoremap <F2>    :cnext<CR>
 nnoremap [q :cprev<cr>zz
-nnoremap <S-F2>  :cprev<CR>
-nnoremap <F3>    :cnfile<CR>
-nnoremap <S-F3>  :cpfile<CR>
-nnoremap <F4>    :cfirst<CR>
-nnoremap <S-F4>  :clast<CR>
 nnoremap ]l :lnext<cr>zz
 nnoremap [l :lprev<cr>zz
 
@@ -79,7 +94,7 @@ xnoremap > >gv
 nnoremap <silent> <leader>L :nohl<CR><C-l>
 
 " <leader>c Close quickfix
-nnoremap <leader>c :cclose<bar>lclose<cr>
+nnoremap <leader>c :cclose<bar>lclose<bar>pclose<cr>
 
 nmap <Leader>- :sp<CR>
 nmap <Leader>= :vsp<CR>
@@ -99,6 +114,10 @@ cnoremap %% <c-r>=expand('%:h').'/'<cr>
 " Ayu theme, one of: "light" | "mirage" | "dark"
 let ayucolor="mirage"
 colorscheme ayu
+
+" GitGutter
+set signcolumn=yes
+set updatetime=250
 
 " IndentLine
 let g:indentLine_char = '▏'
@@ -122,6 +141,10 @@ let $FZF_DEFAULT_OPTS .= ' --inline-info'
 nnoremap <silent> <Leader>P :Commands<CR>
 nnoremap <silent> <Leader>p :GFiles<CR>
 nnoremap <silent> <Leader>o :Files<CR>
+nnoremap <silent> <Leader>: :History:<CR>
+nnoremap <silent> <Leader>/ :History/<CR>
+nnoremap <silent> <Leader>h :History<CR>
+
 "
 " Hide statusline of terminal buffer
 autocmd! FileType fzf
@@ -152,27 +175,33 @@ set hidden
 " ALE stuff
 let g:ale_fix_on_save = 1
 let g:ale_completion_enabled = 1
-" let g:ale_open_list = 1
+let g:ale_open_list = 1
 let g:ale_keep_list_window_open = 1
+
+let g:ale_elixir_elixir_ls_release = '/elixir-ls'
 
 let g:ale_linters = {
   \ 'javascript': ['eslint', 'flow-language-server'],
-  \ 'typecscript': ['eslint', 'tslint', 'tsserver'],
+  \ 'typescript': ['eslint', 'tslint', 'tsserver'],
+  \ 'python': ['flake8', 'pyls'],
+  \ 'elixir': ['elixir-ls'],
   \ 'html': []
   \}
 
 let g:ale_fixers = {
   \ 'javascript': ['eslint', 'prettier'],
-  \ 'typecscript': ['prettier', 'tsserver'],
+  \ 'typescript': ['prettier', 'tsserver'],
   \ 'python': ['autopep8'],
-  \ 'elixir': ['mix_format']
   \ }
 
 map gd <Plug>(ale_go_to_definition)<CR>
 map <c-g>  <Plug>(ale_go_to_definition_in_tab)<CR>
 map <F12> <Plug>(ale_find_references)<CR>
 map K <Plug>(ale_hover)
-" nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
+let g:SuperTabDefaultCompletionType = ""
+set completeopt=menuone,longest,preview,noinsert
 
 " Allow per project .nvimrc file to load
 set exrc

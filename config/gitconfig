@@ -21,7 +21,5 @@
   up = "!git co develop && git pull && git co - && git rebase develop"
 [pull]
   rebase = true
-[push]
-  default = simple
 [branch]
   autosetuprebase = always
