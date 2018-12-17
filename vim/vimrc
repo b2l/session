@@ -1,13 +1,13 @@
 " Init Plug
-if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-   !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+if empty(glob('~/.vim/autoload/plug.vim'))
+   !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 source ~/.vim/plugins.vim
 
 set clipboard=unnamed
-set colorcolumn=+1
+" set colorcolumn=+1
 set expandtab
 set linebreak
 set list
@@ -20,7 +20,7 @@ set numberwidth=5
 set shiftwidth=2
 set smartcase
 set softtabstop=2
-set cursorline cursorcolumn
+" set cursorline cursorcolumn
 set splitbelow splitright
 set tabstop=2
 set termguicolors
@@ -54,6 +54,8 @@ command! -bang Q q
 command! -bang Qa qa
 command! -bang Wq wq
 command! -bang Wqa wqa
+command QQ qa!
+cnoremap w!! execute 'write !sudo tee % > /dev/null' <bar> edit!
 
 " REST OF FILE CONTAINS MAPPINGS
 let mapleader = " "
@@ -120,8 +122,8 @@ set signcolumn=yes
 set updatetime=250
 
 " IndentLine
-let g:indentLine_char = '▏'
-let g:indentLine_first_char = '▏'
+let g:indentLine_char = ''
+let g:indentLine_first_char = ''
 let g:indentLine_showFirstIndentLevel = 1
 let g:indentLine_setColors = 0
 
@@ -175,8 +177,8 @@ set hidden
 " ALE stuff
 let g:ale_fix_on_save = 1
 let g:ale_completion_enabled = 1
-let g:ale_open_list = 1
-let g:ale_keep_list_window_open = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_list_window_size = 5
 
 let g:ale_elixir_elixir_ls_release = '/elixir-ls'
 
@@ -203,5 +205,8 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 let g:SuperTabDefaultCompletionType = ""
 set completeopt=menuone,longest,preview,noinsert
 
+
+set background=dark
+set t_Co=256
 " Allow per project .nvimrc file to load
 set exrc

@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+  sitecc:
+    build: .
+    container_name: sitecc
+    init: true
+    ports:
+      - "3000:3000"
+      - "4000:4000"
+      - "9009:9009"
+      - "5000:5000"
+    volumes:
+      - "/tmp/.X11-unix:/tmp/.X11-unix:z"
+      - "/var/run/docker.sock:/var/run/docker.sock:z"
+      - "~/projects/fleet-management:/home/dev/fleet-management:z"
+      - "~/.zshrc:/home/dev/.zshrc:z"
+      - "~/.vimrc:/home/dev/.vimrc:z"
+      - "~/.vim:/home/dev/.vim:z"
+      - "~/.zprezto:/home/dev/.zprezto:z"
+      - "~/.zlogin:/home/dev/.zlogin:z"
+      - "~/.zlogout:/home/dev/.zlogout:z"
+      - "~/.zpreztorc:/home/dev/.zpreztorc:z"
+      - "~/.zshenv:/home/dev/.zshenv:z"
+      - "~/.local/share/fonts:/home/dev/.local/share/fonts:z"
+      - "~/.aws:/home/dev/.aws:z"
+      - "~/.ssh:/home/dev/.ssh:ro"
+      - "~/.gitconfig:/home/dev/.gitconfig:z"
+    network_mode: host
+    devices:
+      - "/dev/fuse:/dev/fuse"
+    environment:
+      - DISPLAY=${DISPLAY}
+    entrypoint: "/usr/sbin/mosquitto -c /etc/mosquitto/mosquitto-dev-env.conf"
+    cap_add:
+      - ALL

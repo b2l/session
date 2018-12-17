@@ -19,7 +19,12 @@
   br = branch
   plz = push --force-with-lease
   up = "!git co develop && git pull && git co - && git rebase develop"
+	d = difftool
 [pull]
   rebase = true
 [branch]
   autosetuprebase = always
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false

@@ -32,12 +32,8 @@ sudo dnf install -y \
   jq \
   lcov \
   libtool \
-  meld \
   syncthing \
-  tig \
-  tmux \
   util-linux-user \
-  neovim \
   NetworkManager \
   xbacklight \
   rofi \
@@ -48,6 +44,7 @@ sudo dnf install -y \
   w3m \
   w3m-img \
   compton \
+  qterminal \
   zsh
 
 sudo dnf config-manager --set-enabled google-chrome
@@ -58,6 +55,14 @@ echo "Installing keybase"
 if [[ ! -x "$(command -v keybase)" ]]; then
  sudo dnf install -y https://prerelease.keybase.io/keybase_amd64.rpm
 fi
+
+wget -O /tmp/mailspring.rpm https://updates.getmailspring.com/download?platform=linuxRpm
+sudo dnf install -y /tmp/mailspring.rpm
+
+
+echo "=============="
+echo "Install fira code font"
+./install_fira_font
 
 echo "================="
 echo "Installing Development libraries and tools"
@@ -107,9 +112,6 @@ systemctl --user start greenclip
 echo "================="
 echo "Creating symlinks for config files"
 
-echo "Create symlink for tmux configuration"
-ln -sf $PWD/config/tmux.conf $HOME/.tmux.conf
-
 echo "Create symlink for zprezto configuration"
 mkdir -p $HOME/.zshrc.d
 ln -sf $PWD/config/zpreztorc $HOME/.zpreztorc
@@ -139,8 +141,12 @@ echo "Create symlink for compton"
 ln -sf $PWD/config/compton.conf $HOME/.config/compton.conf
 
 echo "Create symlink for .bin"
-ls -sf $PWD/bin $HOME/.bin
+rm -rf $HOME/.bin
+ln -sf $PWD/bin $HOME/.bin
 
+echo "Create symlink for qterminal"
+mkdir -p $HOME/.config/qterminal.org/
+ln -sf $PWD/config/qterminal.ini $HOME/.config/qterminal.org/qterminal.ini
 
 echo "================="
 echo "Changing default shell"

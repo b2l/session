@@ -1,5 +1,7 @@
 vim/vim/plugged
 vim/vim/bundle
+undodir
+.netrwhist
 config/ranger/history
 config/ranger/tagged
 config/ranger/bookmarks
