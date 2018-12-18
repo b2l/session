@@ -12,7 +12,7 @@ services:
     volumes:
       - "/tmp/.X11-unix:/tmp/.X11-unix:z"
       - "/var/run/docker.sock:/var/run/docker.sock:z"
-      - "~/projects/fleet-management:/home/dev/fleet-management:z"
+      - "~/projects/:/home/dev/projects:z"
       - "~/.zshrc:/home/dev/.zshrc:z"
       - "~/.vimrc:/home/dev/.vimrc:z"
       - "~/.vim:/home/dev/.vim:z"
@@ -25,6 +25,7 @@ services:
       - "~/.aws:/home/dev/.aws:z"
       - "~/.ssh:/home/dev/.ssh:ro"
       - "~/.gitconfig:/home/dev/.gitconfig:z"
+      - "~/.gitignore:/home/dev/.gitignore:z"
     network_mode: host
     devices:
       - "/dev/fuse:/dev/fuse"
