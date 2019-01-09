@@ -4,6 +4,7 @@
 [core]
   autocrlf = false
   excludesfile = ~/.gitignore
+  editor = vim
 [gui]
   encoding = utf-8
 [color]
@@ -25,6 +26,12 @@
 [branch]
   autosetuprebase = always
 [diff]
-	tool = vimdiff
-[difftool]
+	tool = vimdiff2
+[difftool "vimdiff2"]
+  truestExitCode = true
 	prompt = false
+  cmd = vim -d $LOCAL $REMOTE
+[merge]
+  tool = vimdiff4
+[mergetool "vimdiff4"]
+  cmd = vim -d $LOCAL $MERGED $REMOTE

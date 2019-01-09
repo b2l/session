@@ -35,7 +35,7 @@ ENV VAULT_ADDR=https://vault.easymile.com REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-c
 USER root
 
 RUN mkdir /chromedriver \
-    && wget -q --continue -P /chromedriver "http://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip" \
+    && wget -q --continue -P /chromedriver "http://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip" \
     && unzip /chromedriver/chromedriver* -d /chromedriver \
     && chmod a+x /chromedriver/chromedriver
 
@@ -93,15 +93,16 @@ RUN yarn global add flow-language-server import-js
 
 # Helm, kops and kubectl
 ADD https://github.com/kubernetes/kops/releases/download/1.8.0/kops-linux-amd64 /usr/bin/kops
+ADD https://storage.googleapis.com/kubernetes-release/release/v1.8.5/bin/linux/amd64/kubectl /usr/bin/kubectl
 ADD https://kubernetes-helm.storage.googleapis.com/helm-v2.7.2-linux-amd64.tar.gz /helm
-RUN curl -o /usr/bin/kubectl -LO https://storage.googleapis.com/kubernetes-release/release/v1.8.5/bin/linux/amd64/kubectl \
-    && tar xvzf /helm \
-    && cp /linux-amd64/helm /usr/bin/helm \
-    chmod +x /usr/bin/*
+RUN tar xvzf /helm
+RUN cp /linux-amd64/helm /usr/bin/helm
+RUN chmod +x /usr/bin/*
 
 USER dev
 
 RUN pip3 install --user 'python-language-server[all]'
+RUN pip3 install --user yapf
 
-WORKDIR /home/dev
+WORKDIR /home/dev/projects/fleet-management
 

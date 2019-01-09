@@ -1,7 +1,9 @@
 version: '3.7'
 services:
   sitecc:
-    build: .
+    build:
+      context: .
+      shm_size: '2gb'
     container_name: sitecc
     init: true
     ports:

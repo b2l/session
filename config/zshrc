@@ -40,8 +40,27 @@ alias map="xargs -n1"
 alias push="git push --force-with-lease"
 alias ammend="git ci --amend --no-edit"
 
+reset() {
+  git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
+}
+
 alias d=docker
 alias dc="docker-compose"
+
+create_app() {
+  cd /home/session/docker
+  d build --network host -t $1 -f $1.Dockerfile .
+  cd -
+}
+
+slack() {
+  d container run --hostname slack --name slack -dti --net=host \
+    -v ~/.config/Slack:/home/dev/.config/Slack \
+    -v /dev/shm:/dev/shm \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -e DISPLAY=${DISPLAY} \
+    slack
+}
 
 alias up="cd ~/projects/session/sitecc && dc up -d"
 alias e="cd ~/projects/session/sitecc && dc exec sitecc zsh"
