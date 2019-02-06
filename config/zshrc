@@ -54,10 +54,12 @@ create_app() {
 }
 
 slack() {
+  d rm slack
   d container run --hostname slack --name slack -dti --net=host \
     -v ~/.config/Slack:/home/dev/.config/Slack \
     -v /dev/shm:/dev/shm \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v ~/Downloads:/Downloads:z \
     -e DISPLAY=${DISPLAY} \
     slack
 }

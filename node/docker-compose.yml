@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  perso:
+    build:
+      context: .
+      shm_size: '2gb'
+    container_name: perso
+    ports:
+      - "3000:3000"
+    volumes:
+      - "~/perso/:/home/dev/perso:z"
+      - "~/.zshrc:/home/dev/.zshrc:z"
+      - "~/.vimrc:/home/dev/.vimrc:z"
+      - "~/.vim:/home/dev/.vim:z"
+      - "~/.zprezto:/home/dev/.zprezto:z"
+      - "~/.zlogin:/home/dev/.zlogin:z"
+      - "~/.zlogout:/home/dev/.zlogout:z"
+      - "~/.zpreztorc:/home/dev/.zpreztorc:z"
+      - "~/.zshenv:/home/dev/.zshenv:z"
+      - "~/.local/share/fonts:/home/dev/.local/share/fonts:z"
+      - "~/.ssh:/home/dev/.ssh:ro"
+      - "~/.gitconfig:/home/dev/.gitconfig:z"
+      - "~/.gitignore:/home/dev/.gitignore:z"
+    network_mode: host
+    stdin_open: true
+    tty: true
+    cap_add:
+      - ALL

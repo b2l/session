@@ -124,34 +124,62 @@ let g:fzf_layout = { 'window': 'enew' }
 let g:fzf_layout = { 'window': '-tabnew' }
 let g:fzf_layout = { 'window': '10split enew' }
 
-" ALE stuff
-let g:ale_fix_on_save = 1
-let g:ale_completion_enabled = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_list_window_size = 5
-
-let g:ale_elixir_elixir_ls_release = '/elixir-ls'
-
-let g:ale_linters = {
-  \ 'javascript': ['eslint', 'flow-language-server'],
-  \ 'typescript': ['eslint', 'tslint', 'tsserver'],
-  \ 'python': ['pyls'],
-  \ 'elixir': ['elixir-ls'],
-  \ 'html': []
-  \}
-
-let g:ale_fixers = { 'javascript': ['eslint', 'prettier'], 'typescript': ['prettier', 'tsserver'], 'python': [] }
-
-map gd <Plug>(ale_go_to_definition)<CR>
-map <c-g>  <Plug>(ale_go_to_definition_in_tab)<CR>
-map <F12> <Plug>(ale_find_references)<CR>
-map K <Plug>(ale_hover)
 nnoremap <leader>S :%s/\<<C-r><C-w>\>/
 
 " Completion
-set completeopt=menu,menuone,longest,preview,noinsert
-imap <c-f> <c-x><c-f><c-f>
-imap <c-space> <c-x><c-o><c-x><c-o>
-inoremap <Enter> <C-R>=pumvisible() ? "\<lt>C-y>" : "\<lt>Enter>"<CR>
+" set completeopt=menu,menuone,longest,preview,noinsert
+" imap <c-f> <c-x><c-f><c-f>
+" inoremap <Enter> <C-R>=pumvisible() ? "\<lt>C-y>" : "\<lt>Enter>"<CR>
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
 
+" vim-lsp
+let g:lsp_signs_enabled=1
+let g:lsp_diagnostics_echo_cursor=1
+
+let g:lsp_log_verbose = 1
+let g:lsp_log_file = expand('/tmp/lsp_log')
+
+map gd <Plug>(lsp-definition)<CR>
+map go  <Plug>(lsp-document-symbol)<CR>
+map <F12> <Plug>(lsp-references)<CR>
+map <F2> <Plug>(lsp-rename)<CR>
+map K <Plug>(lsp-hover)
+
+
+
+" Python
+if executable('pyls')
+    " pip install python-language-server
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+
+function! Get_flow_executable(server_info) abort
+  let l:root_path = lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json')
+  let l:flow_bin = l:root_path . '/node_modules/.bin/flow'
+  return [l:flow_bin, 'lsp']
+endfunction
+
+" JS Flow
+au User lsp_setup call lsp#register_server({
+        \ 'name': 'flow',
+        \ 'cmd': {server_info -> Get_flow_executable(server_info)},
+        \ 'root_uri': {server_info -> lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
+        \ 'whitelist': ['javascript', 'javascript.jsx'],
+        \})
+
+" Elixir
+if executable('/elixir-ls/language_server.sh')
+  au User lsp_setup call lsp#register_server({
+          \ 'name': 'elixir-ls',
+          \ 'cmd': {server_info -> ['/elixir-ls/language_server.sh']},
+          \ 'root_uri': {server_info -> lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'mix.exs'))},
+          \ 'whitelist': ['elixir', 'eelixir'],
+          \})
+endif
 

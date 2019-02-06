@@ -18,6 +18,7 @@ sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.m
 echo "================="
 echo "Installing packages"
 sudo dnf install -y \
+  keychain \
   arandr \
   cmake \
   ctags \
@@ -49,6 +50,7 @@ sudo dnf install -y \
   w3m-img \
   compton \
   qterminal \
+  dunst \
   peek \
   zsh \
   code \
@@ -91,7 +93,17 @@ mkdir -p $HOME/.local/bin
 
 echo "================="
 echo "Installing python packages"
-pip3 install --upgrade --user awscli flake8 boto gnupg hvac minio pip consulate pywal
+pip3 install --upgrade --user \
+  awscli \
+  flake8 \
+  boto \
+  gnupg \
+  hvac \
+  minio \
+  pip \
+  consulate \
+  pywal \
+  diskie
 
 echo "================="
 echo "Installing Zprezto"
@@ -108,6 +120,13 @@ mkdir -p $HOME/.config/systemd/user/
 sudo wget -O $HOME/.config/systemd/user/syncthing.service https://raw.githubusercontent.com/syncthing/syncthing/master/etc/linux-systemd/user/syncthing.service
 systemctl --user enable syncthing.service
 systemctl --user start syncthing.service
+
+echo "================="
+echo "Setting up keychain service"
+mkdir -p $HOME/.config/systemd/user
+ln -sf $PWD/services/keychain.service $HOME/.config/systemd/user/keychain.service
+systemctl --user enable keychain
+systemctl --user start keychain
 
 echo "================="
 echo "Installing and setting up Greenclip service"

@@ -43,7 +43,7 @@ set statusline+=\ %y
 set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
 set statusline+=\[%{&fileformat}\]
 set statusline+=\ %l/%L
-set statusline+=\ %{LinterStatus()}\ 
+" set statusline+=\ %{LinterStatus()}\ 
 set statusline+=
 
 

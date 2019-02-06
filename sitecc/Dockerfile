@@ -101,7 +101,8 @@ RUN chmod +x /usr/bin/*
 
 USER dev
 
-RUN pip3 install --user 'python-language-server[all]'
+RUN pip3 install --user python-language-server
+RUN pip3 install --user pyflakes
 RUN pip3 install --user yapf
 
 WORKDIR /home/dev/projects/fleet-management
