@@ -18,12 +18,16 @@ sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.m
 echo "================="
 echo "Installing packages"
 sudo dnf install -y \
-  keychain \
   arandr \
+  autoconf \
+  automake \
   cmake \
+  code \
+  compton \
   ctags \
   dmenu \
   docker \
+  dunst \
   exa \
   fedora-workstation-repositories \
   feh \
@@ -35,30 +39,46 @@ sudo dnf install -y \
   i3lock \
   i3status \
   jq \
+  keepassxc \
+  keychain \
   lcov \
+  libffi-devel \
   libtool \
-  syncthing \
-  util-linux-user \
+  libxslt-devel \
+  libyaml-devel \
   NetworkManager \
-  xbacklight \
+  ncurses-devel \
+  nodejs \
+  nodejs-yarn \
+  openssl-devel \
+  peek \
+  qterminal \
+  ranger \
+  readline-devel \
   rofi \
   scrot \
-	spotify \
-  keepassxc \
-  ranger \
+  spotify \
+  syncthing \
+  unixODBC-devel \
+  util-linux-user \
   w3m \
   w3m-img \
-  compton \
-  qterminal \
-  dunst \
-  peek \
-  zsh \
-  code \
-  nodejs \
-  nodejs-yarn
+  xbacklight \
+  zsh
 
 sudo dnf config-manager --set-enabled google-chrome
 sudo dnf install -y google-chrome-stable
+
+echo "================="
+echo "Installing Firefox developer edition"
+http -d --output /tmp/firefox-developer.tar.bz2 GET 'https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=en-US'
+sudo tar -C /opt -xjf /tmp/firefox-developer.tar.bz2
+sudo ln -sf /opt/firefox/firefox /usr/local/bin/ff-dev
+
+echo "================="
+echo "Installing Slack"
+http -d --output /tmp/slack.rpm GET 'https://downloads.slack-edge.com/linux_releases/slack-3.3.7-0.1.fc21.x86_64.rpm'
+sudo dnf install -y /tmp/slack.rpm
 
 echo "================="
 echo "Installing keybase"
@@ -66,6 +86,8 @@ if [[ ! -x "$(command -v keybase)" ]]; then
  sudo dnf install -y https://prerelease.keybase.io/keybase_amd64.rpm
 fi
 
+echo "=============="
+echo "Install Mailspring"
 wget -O /tmp/mailspring.rpm https://updates.getmailspring.com/download?platform=linuxRpm
 sudo dnf install -y /tmp/mailspring.rpm
 
@@ -103,7 +125,51 @@ pip3 install --upgrade --user \
   pip \
   consulate \
   pywal \
-  diskie
+  udiskie \
+  python-language-server \
+  pyflakes \
+  yapf
+
+echo "================="
+echo "Installing asdf"
+if [ -d ~/.asdf/.git ]; then
+  asdf update
+else
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+  cd ~/.asdf
+  git checkout "$(git describe --abbrev=0 --tags)"
+  cd -
+fi
+. ~/.asdf/asdf.sh
+
+echo "================="
+echo "Installing erlang/elixir"
+ asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git \
+   && asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+
+echo "================="
+echo "Installing Helm, Kops, Kubectl"
+http -d -o /tmp/kops GET https://github.com/kubernetes/kops/releases/download/1.10.0/kops-linux-amd64 
+http -d -o /tmp/kubectl GET https://storage.googleapis.com/kubernetes-release/release/v1.10.0/bin/linux/amd64/kubectl
+http -d -o /tmp/helm GET https://kubernetes-helm.storage.googleapis.com/helm-v2.7.2-linux-amd64.tar.gz
+cd /tmp
+tar xvzf helm
+sudo cp kops /usr/bin/kops
+sudo cp kubectl /usr/bin/kubectl
+sudo cp linux-amd64/helm /usr/bin/helm
+sudo chmod +x /usr/bin/kops
+sudo chmod +x /usr/bin/kubectl
+sudo chmod +x /usr/bin/helm
+cd -
+
+
+echo "================="
+echo "Installing elixir-ls"
+http -d -o /tmp/elixir-ls.zip GET `http GET https://api.github.com/repos/JakeBecker/elixir-ls/releases/latest | jq -r '.assets[0].browser_download_url'`
+unzip -o /tmp/elixir-ls.zip -d ~/elixir-ls
+
+chmod +x ~/elixir-ls/language_server.sh
+
 
 echo "================="
 echo "Installing Zprezto"
@@ -174,6 +240,10 @@ ln -sf $PWD/bin $HOME/.bin
 echo "Create symlink for qterminal"
 mkdir -p $HOME/.config/qterminal.org/
 ln -sf $PWD/config/qterminal.ini $HOME/.config/qterminal.org/qterminal.ini
+
+echo "Create symlink for dunst"
+mkdir -p $HOME/.config/dunst/
+ln -sf $PWD/config/dunstrc $HOME/.config/dunst/dunstrc
 
 echo "================="
 echo "Changing default shell"

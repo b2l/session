@@ -44,6 +44,8 @@ set include=
 " Don't redraw the screen during batch execution
 set lazyredraw
 
+let g:netrw_liststyle = 3
+
 " Undo
 silent !mkdir ~/.vim/undodir > /dev/null 2>&1
 set undofile
