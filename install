@@ -9,35 +9,30 @@ sudo dnf -y install dnf-plugins-core
 echo "================="
 echo "Adding repositories"
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-sudo dnf copr enable yaroslav/i3desktop -y
+# sudo dnf copr enable yaroslav/i3desktop -y
 sudo dnf config-manager --add-repo https://download.opensuse.org/repositories/home:/phiwo:/peek/Fedora_26/home:phiwo:peek.repo
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+
+sudo dnf copr enable shengis/mako
 
 
 echo "================="
 echo "Installing packages"
 sudo dnf install -y \
-  arandr \
+  NetworkManager \
   autoconf \
   automake \
   cmake \
   code \
-  compton \
   ctags \
-  dmenu \
   docker \
-  dunst \
   exa \
   fedora-workstation-repositories \
-  feh \
   fuse-sshfs \
   gcc-c++ \
   htop \
   httpie \
-  i3 \
-  i3lock \
-  i3status \
   jq \
   keepassxc \
   keychain \
@@ -46,7 +41,8 @@ sudo dnf install -y \
   libtool \
   libxslt-devel \
   libyaml-devel \
-  NetworkManager \
+  light \
+  mako \
   ncurses-devel \
   nodejs \
   nodejs-yarn \
@@ -56,14 +52,13 @@ sudo dnf install -y \
   ranger \
   readline-devel \
   rofi \
-  scrot \
   spotify \
+  sway \
   syncthing \
   unixODBC-devel \
   util-linux-user \
   w3m \
   w3m-img \
-  xbacklight \
   zsh
 
 sudo dnf config-manager --set-enabled google-chrome
@@ -127,9 +122,9 @@ pip3 install --upgrade --user \
   pywal \
   python-language-server \
   pyflakes \
+  udiskie \
   yapf
 
-sudo pip3 install udiskie
 
 echo "================="
 echo "Installing asdf"
@@ -163,15 +158,6 @@ sudo chmod +x /usr/bin/kubectl
 sudo chmod +x /usr/bin/helm
 cd -
 
-
-echo "================="
-echo "Installing elixir-ls"
-http -d -o /tmp/elixir-ls.zip GET `http GET https://api.github.com/repos/JakeBecker/elixir-ls/releases/latest | jq -r '.assets[0].browser_download_url'`
-unzip -o /tmp/elixir-ls.zip -d ~/elixir-ls
-
-chmod +x ~/elixir-ls/language_server.sh
-
-
 echo "================="
 echo "Installing Zprezto"
 if [ ! -d "$HOME/.zprezto" ]; then
@@ -194,13 +180,6 @@ mkdir -p $HOME/.config/systemd/user
 ln -sf $PWD/services/keychain.service $HOME/.config/systemd/user/keychain.service
 systemctl --user enable keychain
 systemctl --user start keychain
-
-# echo "================="
-# echo "Setting up udiskie service"
-# mkdir -p $HOME/.config/systemd/user
-# ln -sf $PWD/services/udiskie.service $HOME/.config/systemd/user/udiskie.service
-# systemctl --user enable udiskie
-# systemctl --user start udiskie
 
 echo "================="
 echo "Installing and setting up Greenclip service"
@@ -231,15 +210,13 @@ ln -sf $PWD/vim/vim $HOME/.vim
 nvim +PlugInstall +qall
 nvim +UpdateRemotePlugins +qall
 
-echo "Create symlink for i3"
-ln -sf $PWD/config/i3-config $HOME/.config/i3/config
-ln -sf $PWD/config/i3status.conf $HOME/.i3status.conf
+echo "Create symlink for sway"
+mkdir -p $HOME/.config/sway
+ln -sf $PWD/config/sway-config $HOME/.config/sway/config
+ln -sf $PWD/config/swaystatus.conf $HOME/.swaystatus.conf
 
 echo "Create symlink for ranger"
 ln -sf $PWD/config/ranger $HOME/.config/ranger
-
-echo "Create symlink for compton"
-ln -sf $PWD/config/compton.conf $HOME/.config/compton.conf
 
 echo "Create symlink for .bin"
 rm -rf $HOME/.bin
@@ -248,10 +225,6 @@ ln -sf $PWD/bin $HOME/.bin
 echo "Create symlink for qterminal"
 mkdir -p $HOME/.config/qterminal.org/
 ln -sf $PWD/config/qterminal.ini $HOME/.config/qterminal.org/qterminal.ini
-
-echo "Create symlink for dunst"
-mkdir -p $HOME/.config/dunst/
-ln -sf $PWD/config/dunstrc $HOME/.config/dunst/dunstrc
 
 echo "================="
 echo "Changing default shell"
