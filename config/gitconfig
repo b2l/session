@@ -20,7 +20,7 @@
   br = branch
   plz = push --force-with-lease
   up = "!git co develop && git pull && git co - && git rebase develop"
-	d = difftool
+	d = difftool --no-prompt
 [pull]
   rebase = true
 [branch]

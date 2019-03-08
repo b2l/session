@@ -125,10 +125,11 @@ pip3 install --upgrade --user \
   pip \
   consulate \
   pywal \
-  udiskie \
   python-language-server \
   pyflakes \
   yapf
+
+sudo pip3 install udiskie
 
 echo "================="
 echo "Installing asdf"
@@ -193,6 +194,13 @@ mkdir -p $HOME/.config/systemd/user
 ln -sf $PWD/services/keychain.service $HOME/.config/systemd/user/keychain.service
 systemctl --user enable keychain
 systemctl --user start keychain
+
+# echo "================="
+# echo "Setting up udiskie service"
+# mkdir -p $HOME/.config/systemd/user
+# ln -sf $PWD/services/udiskie.service $HOME/.config/systemd/user/udiskie.service
+# systemctl --user enable udiskie
+# systemctl --user start udiskie
 
 echo "================="
 echo "Installing and setting up Greenclip service"

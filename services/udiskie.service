@@ -1,0 +1,10 @@
+[Unit]
+Description=Start udiskie
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/udiskie
+
+[Install]
+WantedBy=default.target
