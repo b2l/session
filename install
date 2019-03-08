@@ -14,7 +14,7 @@ sudo dnf config-manager --add-repo https://download.opensuse.org/repositories/ho
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
 
-sudo dnf copr enable shengis/mako
+sudo dnf copr enable shengis/mako -y
 
 
 echo "================="
@@ -23,14 +23,17 @@ sudo dnf install -y \
   NetworkManager \
   autoconf \
   automake \
+  bzip2 \
   cmake \
   code \
   ctags \
   docker \
   exa \
   fedora-workstation-repositories \
+  firefox \
   fuse-sshfs \
   gcc-c++ \
+  gnome-keyring \
   htop \
   httpie \
   jq \
@@ -47,19 +50,22 @@ sudo dnf install -y \
   nodejs \
   nodejs-yarn \
   openssl-devel \
-  peek \
   qterminal \
   ranger \
   readline-devel \
   rofi \
-  spotify \
   sway \
   syncthing \
   unixODBC-devel \
   util-linux-user \
+  vim \
   w3m \
   w3m-img \
+  zip \
   zsh
+
+  # peek \
+  # spotify \
 
 sudo dnf config-manager --set-enabled google-chrome
 sudo dnf install -y google-chrome-stable
@@ -129,6 +135,7 @@ pip3 install --upgrade --user \
 echo "================="
 echo "Installing asdf"
 if [ -d ~/.asdf/.git ]; then
+  . ~/.asdf/asdf.sh
   asdf update
 else
   git clone https://github.com/asdf-vm/asdf.git ~/.asdf
@@ -161,7 +168,7 @@ cd -
 echo "================="
 echo "Installing Zprezto"
 if [ ! -d "$HOME/.zprezto" ]; then
-	git clone --recursive git@github.com:AlexDouze/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+	git clone --recursive https://github.com/AlexDouze/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 fi
 if [ ! -d "$HOME/.zprezto-contrib" ]; then
   git clone --recursive https://github.com/AlexDouze/prezto-contrib.git "${ZDOTDIR:-$HOME}/.zprezto-contrib"
@@ -202,13 +209,10 @@ ln -sf $PWD/config/dircolors-solarized.ansi-light $HOME/.zshrc.d/
 echo "Create symlink for gitconfig"
 ln -sf $PWD/config/gitconfig $HOME/.gitconfig
 
-echo "Create symlink for neovim"
-ln -sf $PWD/vim/vimrc $HOME/.config/nvim/init.vim
+echo "Create symlink for vim"
 ln -sf $PWD/vim/vimrc $HOME/.vimrc
 rm -rf $HOME/.vim
 ln -sf $PWD/vim/vim $HOME/.vim
-nvim +PlugInstall +qall
-nvim +UpdateRemotePlugins +qall
 
 echo "Create symlink for sway"
 mkdir -p $HOME/.config/sway
