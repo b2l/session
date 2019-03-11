@@ -216,6 +216,14 @@ systemctl --user enable greenclip
 systemctl --user start greenclip
 
 echo "================="
+echo "Enabling ssh-agent service"
+ln -sf $PWD/services/ssh-agent.service $HOME/.config/systemd/user/ssh-agent.service
+ln -sf $PWD/config/pam_environment $HOME/.pam_environment
+ln -sf $PWD/config/ssh_config $HOME/.ssh/config
+systemctl --user enable ssh-agent
+systemctl --user start ssh-agent
+
+echo "================="
 echo "Creating symlinks for config files"
 
 echo "Create symlink for zprezto configuration"
