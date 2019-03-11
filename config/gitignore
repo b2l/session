@@ -1,2 +1,4 @@
 .nvimrc
 .tern-port
+*.code-workspace
+.vscode

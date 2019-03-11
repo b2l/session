@@ -68,3 +68,9 @@ alias g=gws
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /home/nmedda/.asdf/installs/vault/0.9.5/bin/vault vault
+
+# If running from tty1 start sway
+if [ "$(tty)" = "/dev/tty1" ]; then
+	sway
+	exit 0
+fi

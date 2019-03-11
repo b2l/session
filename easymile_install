@@ -1,0 +1,6 @@
+sudo dnf install -y mosquitto
+
+sudo mkdir /chromedriver
+sudo wget -q --continue -P /chromedriver "http://chromedriver.storage.googleapis.com/2.36/chromedriver_linux64.zip"
+sudo unzip /chromedriver/chromedriver* -d /chromedriver
+sudo chmod +x /chromedriver/chromedriver

@@ -15,11 +15,12 @@ sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
 
 sudo dnf copr enable shengis/mako -y
+sudo dnf copr enable mbitard/sway -y
 
 
 echo "================="
 echo "Installing packages"
-sudo dnf install -y \
+sudo dnf install -y --allowerasing \
   NetworkManager \
   autoconf \
   automake \
@@ -29,6 +30,7 @@ sudo dnf install -y \
   ctags \
   docker \
   exa \
+  expect \
   fedora-workstation-repositories \
   firefox \
   fuse-sshfs \
@@ -46,15 +48,22 @@ sudo dnf install -y \
   libyaml-devel \
   light \
   mako \
+  NetworkManager-wifi \
   ncurses-devel \
   nodejs \
   nodejs-yarn \
   openssl-devel \
+  pulseaudio \
+  pulseaudio-utils \
+  pavucontrol \
+  python3 \
   qterminal \
   ranger \
   readline-devel \
   rofi \
   sway \
+  swaylock \
+  swayidle \
   syncthing \
   unixODBC-devel \
   util-linux-user \
@@ -66,6 +75,10 @@ sudo dnf install -y \
 
   # peek \
   # spotify \
+
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+
+sudo ln -sf /usr/bin/nodejs-yarn /usr/local/bin/yarn
 
 sudo dnf config-manager --set-enabled google-chrome
 sudo dnf install -y google-chrome-stable
@@ -124,6 +137,8 @@ pip3 install --upgrade --user \
   hvac \
   minio \
   pip \
+  psutil \
+  netifaces \
   consulate \
   pywal \
   python-language-server \
@@ -147,8 +162,12 @@ fi
 
 echo "================="
 echo "Installing erlang/elixir"
- asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git \
-   && asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git \
+  && asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+
+asdf plugin-add vault https://github.com/Banno/asdf-hashicorp.git && \
+asdf install vault 0.9.5 && \
+asdf global vault 0.9.5 && \
 
 echo "================="
 echo "Installing Helm, Kops, Kubectl"
@@ -208,6 +227,7 @@ ln -sf $PWD/config/dircolors-solarized.ansi-light $HOME/.zshrc.d/
 
 echo "Create symlink for gitconfig"
 ln -sf $PWD/config/gitconfig $HOME/.gitconfig
+ln -sf $PWD/config/gitignore $HOME/.gitignore
 
 echo "Create symlink for vim"
 ln -sf $PWD/vim/vimrc $HOME/.vimrc
@@ -230,6 +250,9 @@ echo "Create symlink for qterminal"
 mkdir -p $HOME/.config/qterminal.org/
 ln -sf $PWD/config/qterminal.ini $HOME/.config/qterminal.org/qterminal.ini
 
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+
 echo "================="
 echo "Changing default shell"
-chsh -s /bin/zsh
+chsh -s /usr/bin/zsh
