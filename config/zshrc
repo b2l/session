@@ -74,3 +74,15 @@ if [ "$(tty)" = "/dev/tty1" ]; then
 	sway
 	exit 0
 fi
+export TZ='Europe/Paris'
+
+export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+
+
+kbn () {
+  kubectl config set-context $(kubectl config current-context) --namespace=$1
+}
+
+alias kbcu="kubectl config use-context"
+
+source <(kubectl completion zsh)

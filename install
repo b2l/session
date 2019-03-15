@@ -22,6 +22,7 @@ echo "================="
 echo "Installing packages"
 sudo dnf install -y --allowerasing \
   NetworkManager \
+  NetworkManager-wifi \
   autoconf \
   automake \
   bzip2 \
@@ -43,27 +44,31 @@ sudo dnf install -y --allowerasing \
   keychain \
   lcov \
   libffi-devel \
+  libnotify \
   libtool \
   libxslt-devel \
   libyaml-devel \
   light \
   mako \
-  NetworkManager-wifi \
   ncurses-devel \
   nodejs \
   nodejs-yarn \
   openssl-devel \
+  pavucontrol \
+  postgresql-server \
+  postgresql-contrib \
+  powerline-fonts \
   pulseaudio \
   pulseaudio-utils \
-  pavucontrol \
   python3 \
+  python3-udiskie \
   qterminal \
   ranger \
   readline-devel \
   rofi \
   sway \
-  swaylock \
   swayidle \
+  swaylock \
   syncthing \
   unixODBC-devel \
   util-linux-user \

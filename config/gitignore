@@ -2,3 +2,4 @@
 .tern-port
 *.code-workspace
 .vscode
+.elixir_ls
