@@ -102,6 +102,10 @@ output eDP-1 pos 0 0
     bindsym XF86AudioNext exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
     bindsym XF86AudioPrev exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
 
+    bindsym $mod+Print exec /usr/local/bin/grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') $(xdg-user-dir PICTURES)/$(date +'%Y-%m-%d-%H%M%S_grim.png')
+    bindsym $mod+Shift+Print exec /usr/local/bin/grim -g "$(/usr/local/bin/slurp)" $(xdg-user-dir PICTURES)/$(date +'%Y-%m-%d-%H%M%S_grim.png')
+
+
 
 #
 # Moving around:
@@ -255,7 +259,7 @@ bar {
     id topbap
     position top
     font pango:Fira Mono for Powerline 12
-    status_command ~/.bumblebee-status/bumblebee-status -m datetime nic battery pasink pasource -p interval=2.5 datetime.format="%a, %b %d %Y %H:%M" -t gruvbox-powerline
+    status_command ~/.bumblebee-status/bumblebee-status -m datetime battery pasink pasource -p interval=2.5 datetime.format="%a, %b %d %Y %H:%M" -t gruvbox-powerline
 }
 
 exec mako --margin 10 --pading 10 --font pango:Fira Code 12

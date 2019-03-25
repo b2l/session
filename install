@@ -3,24 +3,20 @@ set -e
 
 echo "================="
 echo "Updating packages"
-sudo dnf --refresh update -y
 sudo dnf -y install dnf-plugins-core
 
 echo "================="
 echo "Adding repositories"
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-# sudo dnf copr enable yaroslav/i3desktop -y
-sudo dnf config-manager --add-repo https://download.opensuse.org/repositories/home:/phiwo:/peek/Fedora_26/home:phiwo:peek.repo
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
 
-sudo dnf copr enable shengis/mako -y
 sudo dnf copr enable mbitard/sway -y
-
+sudo dnf copr enable embik/wayland-desktop -x sway -x swayidle -x swaylock -x wlroots -y
 
 echo "================="
 echo "Installing packages"
-sudo dnf install -y --allowerasing \
+sudo dnf install --refresh -y --allowerasing \
   NetworkManager \
   NetworkManager-wifi \
   autoconf \
@@ -37,6 +33,7 @@ sudo dnf install -y --allowerasing \
   fuse-sshfs \
   gcc-c++ \
   gnome-keyring \
+  grim \
   htop \
   httpie \
   jq \
@@ -55,8 +52,8 @@ sudo dnf install -y --allowerasing \
   nodejs-yarn \
   openssl-devel \
   pavucontrol \
-  postgresql-server \
   postgresql-contrib \
+  postgresql-server \
   powerline-fonts \
   pulseaudio \
   pulseaudio-utils \
@@ -66,6 +63,7 @@ sudo dnf install -y --allowerasing \
   ranger \
   readline-devel \
   rofi \
+  slurp \
   sway \
   swayidle \
   swaylock \
@@ -263,7 +261,7 @@ echo "Create symlink for qterminal"
 mkdir -p $HOME/.config/qterminal.org/
 ln -sf $PWD/config/qterminal.ini $HOME/.config/qterminal.org/qterminal.ini
 
-echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+echo "fs.inotify.max_user_watches=524288" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 
 echo "================="
