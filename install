@@ -9,7 +9,6 @@ echo "================="
 echo "Adding repositories"
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
 
 sudo dnf copr enable mbitard/sway -y
 sudo dnf copr enable embik/wayland-desktop -x sway -x swayidle -x swaylock -x wlroots -y
@@ -17,13 +16,13 @@ sudo dnf copr enable embik/wayland-desktop -x sway -x swayidle -x swaylock -x wl
 echo "================="
 echo "Installing packages"
 sudo dnf install --refresh -y --allowerasing \
+  GConf2 \
   NetworkManager \
   NetworkManager-wifi \
   autoconf \
   automake \
   bzip2 \
   cmake \
-  code \
   ctags \
   docker \
   exa \
@@ -63,6 +62,7 @@ sudo dnf install --refresh -y --allowerasing \
   ranger \
   readline-devel \
   rofi \
+  snap \
   slurp \
   sway \
   swayidle \
@@ -76,15 +76,20 @@ sudo dnf install --refresh -y --allowerasing \
   zip \
   zsh
 
-  # peek \
-  # spotify \
-
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 sudo ln -sf /usr/bin/nodejs-yarn /usr/local/bin/yarn
 
 sudo dnf config-manager --set-enabled google-chrome
 sudo dnf install -y google-chrome-stable
+
+sudo ln -s /var/lib/snapd/snap /snap
+sudo snap install spotify
+sudo snap install vscode --classic
+sudo snap install slack --classic
+sudo snap install mailspring --classic
+sudo snap install mattermost-desktop
+sudo snap install figma-linux --beta
 
 echo "================="
 echo "Installing Firefox developer edition"
@@ -93,21 +98,10 @@ sudo tar -C /opt -xjf /tmp/firefox-developer.tar.bz2
 sudo ln -sf /opt/firefox/firefox /usr/local/bin/ff-dev
 
 echo "================="
-echo "Installing Slack"
-http -d --output /tmp/slack.rpm GET 'https://downloads.slack-edge.com/linux_releases/slack-3.3.7-0.1.fc21.x86_64.rpm'
-sudo dnf install -y /tmp/slack.rpm
-
-echo "================="
 echo "Installing keybase"
 if [[ ! -x "$(command -v keybase)" ]]; then
  sudo dnf install -y https://prerelease.keybase.io/keybase_amd64.rpm
 fi
-
-echo "=============="
-echo "Install Mailspring"
-wget -O /tmp/mailspring.rpm https://updates.getmailspring.com/download?platform=linuxRpm
-sudo dnf install -y /tmp/mailspring.rpm
-
 
 echo "=============="
 echo "Install fira code font"
