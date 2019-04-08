@@ -83,6 +83,7 @@ sudo ln -sf /usr/bin/nodejs-yarn /usr/local/bin/yarn
 sudo dnf config-manager --set-enabled google-chrome
 sudo dnf install -y google-chrome-stable
 
+sudo rm -f /snap
 sudo ln -s /var/lib/snapd/snap /snap
 sudo snap install spotify
 sudo snap install vscode --classic
