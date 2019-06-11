@@ -24,5 +24,5 @@ fc-cache -f
 
 rm -rf /tmp/fontawesome*
 wget -O /tmp/fontawesome.zip https://use.fontawesome.com/releases/v5.5.0/fontawesome-free-5.5.0-desktop.zip
-unzip -d /tmp/fontawesome /tmp/fontawesome.zip
+unzip -qd /tmp/fontawesome /tmp/fontawesome.zip
 mv /tmp/fontawesome/*/otfs/* $fonts_dir

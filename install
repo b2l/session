@@ -85,12 +85,17 @@ sudo dnf install -y google-chrome-stable
 
 sudo rm -f /snap
 sudo ln -s /var/lib/snapd/snap /snap
-sudo snap install spotify
-sudo snap install vscode --classic
-sudo snap install slack --classic
+
+sudo snap refresh
+# sudo snap install spotify
+# sudo snap install code --classic
 sudo snap install mailspring --classic
-sudo snap install mattermost-desktop
-sudo snap install figma-linux --beta
+sudo snap install ag-mcphail
+
+flatpak remote-add --if-not-exists Flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install -y --noninteractive com.valvesoftware.Steam
+flatpak install -y --noninteractive org.signal.Signal
+flatpak install -y --noninteractive com.visualstudio.code
 
 echo "================="
 echo "Installing Firefox developer edition"

@@ -22,25 +22,32 @@ if [[ -s "~/.zshrc.d/yarn-completion.bash" ]]; then
   source "~/.zshrc.d/yarn-completion.bash"
 fi
 
+if [[ -s ~/projects/shell-utils/completion/ ]]; then
+  for file in `ls ~/projects/shell-utils/completion`; do
+    source ~/projects/shell-utils/completion/$file
+  done
+fi
+
 if [[ -s "~/.zshrc.d/kubectl-completion.bash" ]]; then
   source "~/.zshrc.d/kubectl-completion.bash"
 fi
 
 eval `dircolors ~/.zshrc.d/dircolors-solarized.ansi-light`
 
+
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 alias dl="cd ~/Downloads"
 alias r=ranger
-
+alias ag=ag-mcphail.ag
 # Get week number
 alias week='date +%V'
-
 # Intuitive map function
 # For example, to list all directories that contain a certain file:
 # find . -name .gitattributes | map dirname
 alias map="xargs -n1"
 
+# Git
 alias push="git push --force-with-lease"
 alias amend="git ci --amend --no-edit"
 
@@ -48,8 +55,12 @@ reset() {
   git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
 }
 
+# Docker
 alias d=docker
 alias dc="docker-compose"
+alias g=gws
+
+# Yarn
 alias yarn=nodejs-yarn
 
 . ${HOME}/projects/shell-utils/zshrc
@@ -58,13 +69,10 @@ export PATH="${PATH}:${HOME}/.bin:${HOME}/.yarn/bin:${HOME}/.local/bin/:${HOME}/
 
 export EM_LOCAL_PROJECTS_DIR=${HOME}/projects/
 
-alias g=gws
-
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /home/nmedda/.asdf/installs/vault/0.9.5/bin/vault vault
@@ -79,10 +87,22 @@ export TZ='Europe/Paris'
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
 
 
+# Kube
 kbn () {
   kubectl config set-context $(kubectl config current-context) --namespace=$1
 }
 
+alias k=kubectl
 alias kbcu="kubectl config use-context"
 
 source <(kubectl completion zsh)
+
+###-tns-completion-start-###
+if [ -f /home/nmedda/.tnsrc ]; then 
+    source /home/nmedda/.tnsrc 
+fi
+###-tns-completion-end-###
+
+
+### Alias
+alias code="flatpak run com.visualstudio.code"
