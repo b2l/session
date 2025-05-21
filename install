@@ -7,39 +7,27 @@ sudo dnf --refresh update -y
 sudo dnf -y install dnf-plugins-core
 
 echo "================="
-echo "Adding repositories"
-sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-sudo dnf copr enable yaroslav/i3desktop -y
-sudo dnf config-manager --add-repo https://download.opensuse.org/repositories/home:/phiwo:/peek/Fedora_26/home:phiwo:peek.repo
-sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
-
-
-echo "================="
 echo "Installing packages"
 sudo dnf install -y \
+  vim \
   arandr \
   autoconf \
   automake \
   cmake \
   code \
-  compton \
   ctags \
-  dmenu \
-  docker \
+  rofi \
   dunst \
   exa \
   fedora-workstation-repositories \
-  feh \
   fuse-sshfs \
   gcc-c++ \
   htop \
   httpie \
-  i3 \
-  i3lock \
-  i3status \
+  sway \
+  swaylock \
+  waybar \
   jq \
-  keepassxc \
   keychain \
   lcov \
   libffi-devel \
@@ -48,68 +36,22 @@ sudo dnf install -y \
   libyaml-devel \
   NetworkManager \
   ncurses-devel \
-  nodejs \
-  nodejs-yarn \
   openssl-devel \
-  peek \
-  qterminal \
-  ranger \
+  alacritty \
   readline-devel \
-  rofi \
   scrot \
-  spotify \
   syncthing \
   unixODBC-devel \
   util-linux-user \
-  w3m \
-  w3m-img \
-  xbacklight \
   zsh
 
-sudo dnf config-manager --set-enabled google-chrome
-sudo dnf install -y google-chrome-stable
 
-echo "================="
-echo "Installing Firefox developer edition"
-http -d --output /tmp/firefox-developer.tar.bz2 GET 'https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=en-US'
-sudo tar -C /opt -xjf /tmp/firefox-developer.tar.bz2
-sudo ln -sf /opt/firefox/firefox /usr/local/bin/ff-dev
-
-echo "================="
-echo "Installing Slack"
-http -d --output /tmp/slack.rpm GET 'https://downloads.slack-edge.com/linux_releases/slack-3.3.7-0.1.fc21.x86_64.rpm'
-sudo dnf install -y /tmp/slack.rpm
-
-echo "================="
-echo "Installing keybase"
-if [[ ! -x "$(command -v keybase)" ]]; then
- sudo dnf install -y https://prerelease.keybase.io/keybase_amd64.rpm
-fi
-
-echo "=============="
-echo "Install Mailspring"
-wget -O /tmp/mailspring.rpm https://updates.getmailspring.com/download?platform=linuxRpm
-sudo dnf install -y /tmp/mailspring.rpm
-
+flatpak install flathub com.spotify.Client
+flatpak install flathub org.mozilla.firefox
 
 echo "=============="
 echo "Install fira code font"
 ./install_fira_font
-
-echo "================="
-echo "Installing Development libraries and tools"
-sudo dnf group install -y "Development Libraries" "Development Tools"
-
-echo "================="
-echo "Enabling and starting docker daemon"
-if getent group docker; then
-  echo "docker group exist"
-else
-  sudo groupadd docker
-fi
-sudo usermod -aG docker "$USER"
-sudo systemctl enable docker
-sudo systemctl start docker
 
 mkdir -p $HOME/.local/bin
 
@@ -132,88 +74,12 @@ pip3 install --upgrade --user \
 sudo pip3 install udiskie
 
 echo "================="
-echo "Installing asdf"
-if [ -d ~/.asdf/.git ]; then
-  asdf update
-else
-  git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-  cd ~/.asdf
-  git checkout "$(git describe --abbrev=0 --tags)"
-  cd -
-fi
-. ~/.asdf/asdf.sh
-
-echo "================="
-echo "Installing erlang/elixir"
- asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git \
-   && asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
-
-echo "================="
-echo "Installing Helm, Kops, Kubectl"
-http -d -o /tmp/kops GET https://github.com/kubernetes/kops/releases/download/1.10.0/kops-linux-amd64 
-http -d -o /tmp/kubectl GET https://storage.googleapis.com/kubernetes-release/release/v1.10.0/bin/linux/amd64/kubectl
-http -d -o /tmp/helm GET https://kubernetes-helm.storage.googleapis.com/helm-v2.7.2-linux-amd64.tar.gz
-cd /tmp
-tar xvzf helm
-sudo cp kops /usr/bin/kops
-sudo cp kubectl /usr/bin/kubectl
-sudo cp linux-amd64/helm /usr/bin/helm
-sudo chmod +x /usr/bin/kops
-sudo chmod +x /usr/bin/kubectl
-sudo chmod +x /usr/bin/helm
-cd -
-
-
-echo "================="
-echo "Installing elixir-ls"
-http -d -o /tmp/elixir-ls.zip GET `http GET https://api.github.com/repos/JakeBecker/elixir-ls/releases/latest | jq -r '.assets[0].browser_download_url'`
-unzip -o /tmp/elixir-ls.zip -d ~/elixir-ls
-
-chmod +x ~/elixir-ls/language_server.sh
-
-
-echo "================="
-echo "Installing Zprezto"
-if [ ! -d "$HOME/.zprezto" ]; then
-	git clone --recursive git@github.com:AlexDouze/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-fi
-if [ ! -d "$HOME/.zprezto-contrib" ]; then
-  git clone --recursive https://github.com/AlexDouze/prezto-contrib.git "${ZDOTDIR:-$HOME}/.zprezto-contrib"
-fi
-
-echo "================="
-echo "Setting up Syncthing service"
-mkdir -p $HOME/.config/systemd/user/
-sudo wget -O $HOME/.config/systemd/user/syncthing.service https://raw.githubusercontent.com/syncthing/syncthing/master/etc/linux-systemd/user/syncthing.service
-systemctl --user enable syncthing.service
-systemctl --user start syncthing.service
-
-echo "================="
-echo "Setting up keychain service"
-mkdir -p $HOME/.config/systemd/user
-ln -sf $PWD/services/keychain.service $HOME/.config/systemd/user/keychain.service
-systemctl --user enable keychain
-systemctl --user start keychain
-
-# echo "================="
-# echo "Setting up udiskie service"
-# mkdir -p $HOME/.config/systemd/user
-# ln -sf $PWD/services/udiskie.service $HOME/.config/systemd/user/udiskie.service
-# systemctl --user enable udiskie
-# systemctl --user start udiskie
-
-echo "================="
-echo "Installing and setting up Greenclip service"
-sudo wget https://github.com/erebe/greenclip/releases/download/3.0/greenclip -O /usr/bin/greenclip
-sudo chmod +x /usr/bin/greenclip
-ln -sf $PWD/services/greenclip.service $HOME/.config/systemd/user/greenclip.service
-systemctl --user enable greenclip
-systemctl --user start greenclip
-
-echo "================="
 echo "Creating symlinks for config files"
 
 echo "Create symlink for zprezto configuration"
+rm -rf $HOME/.zshrc.d
+rm $HOME/.zpreztorc
+rm $HOME/.zshrc
 mkdir -p $HOME/.zshrc.d
 ln -sf $PWD/config/zpreztorc $HOME/.zpreztorc
 ln -sf $PWD/config/zshrc $HOME/.zshrc
@@ -221,37 +87,24 @@ ln -sf $PWD/config/yarn-completion.bash $HOME/.zshrc.d/
 ln -sf $PWD/config/dircolors-solarized.ansi-light $HOME/.zshrc.d/
 
 echo "Create symlink for gitconfig"
+rm $HOME/.gitconfig
 ln -sf $PWD/config/gitconfig $HOME/.gitconfig
 
-echo "Create symlink for neovim"
-ln -sf $PWD/vim/vimrc $HOME/.config/nvim/init.vim
-ln -sf $PWD/vim/vimrc $HOME/.vimrc
+echo "Create symlink for vim"
 rm -rf $HOME/.vim
+ln -sf $PWD/vim/vimrc $HOME/.vimrc
 ln -sf $PWD/vim/vim $HOME/.vim
-nvim +PlugInstall +qall
-nvim +UpdateRemotePlugins +qall
 
-echo "Create symlink for i3"
-ln -sf $PWD/config/i3-config $HOME/.config/i3/config
-ln -sf $PWD/config/i3status.conf $HOME/.i3status.conf
-
-echo "Create symlink for ranger"
-ln -sf $PWD/config/ranger $HOME/.config/ranger
-
-echo "Create symlink for compton"
-ln -sf $PWD/config/compton.conf $HOME/.config/compton.conf
+echo "Create symlink for sway"
+rm -rf $HOME/.config/sway $HOME/.config/compton $HOME/.config/waybar $HOME/.config/dunst
+ln -sf $PWD/config/sway $HOME/.config/sway
+ln -sf $PWD/config/compton $HOME/.config/compton
+ln -sf $PWD/config/waybar $HOME/.config/waybar
+ln -sf $PWD/config/dunst $HOME/.config/dunst
 
 echo "Create symlink for .bin"
 rm -rf $HOME/.bin
 ln -sf $PWD/bin $HOME/.bin
-
-echo "Create symlink for qterminal"
-mkdir -p $HOME/.config/qterminal.org/
-ln -sf $PWD/config/qterminal.ini $HOME/.config/qterminal.org/qterminal.ini
-
-echo "Create symlink for dunst"
-mkdir -p $HOME/.config/dunst/
-ln -sf $PWD/config/dunstrc $HOME/.config/dunst/dunstrc
 
 echo "================="
 echo "Changing default shell"
