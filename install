@@ -9,6 +9,8 @@ sudo dnf -y install dnf-plugins-core
 echo "================="
 echo "Installing packages"
 sudo dnf install -y \
+  --skip-unavailable \
+  --allowerasing \
   vim \
   arandr \
   autoconf \
@@ -43,11 +45,13 @@ sudo dnf install -y \
   syncthing \
   unixODBC-devel \
   util-linux-user \
+  flatpak \
   zsh
 
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
-flatpak install flathub com.spotify.Client
-flatpak install flathub org.mozilla.firefox
+flatpak install -y --noninteractive flathub com.spotify.Client
+flatpak install -y --noninteractive flathub org.mozilla.firefox
 
 echo "=============="
 echo "Install fira code font"
@@ -78,8 +82,8 @@ echo "Creating symlinks for config files"
 
 echo "Create symlink for zprezto configuration"
 rm -rf $HOME/.zshrc.d
-rm $HOME/.zpreztorc
-rm $HOME/.zshrc
+rm -rf $HOME/.zpreztorc
+rm -rf $HOME/.zshrc
 mkdir -p $HOME/.zshrc.d
 ln -sf $PWD/config/zpreztorc $HOME/.zpreztorc
 ln -sf $PWD/config/zshrc $HOME/.zshrc
@@ -87,7 +91,7 @@ ln -sf $PWD/config/yarn-completion.bash $HOME/.zshrc.d/
 ln -sf $PWD/config/dircolors-solarized.ansi-light $HOME/.zshrc.d/
 
 echo "Create symlink for gitconfig"
-rm $HOME/.gitconfig
+rm -rf $HOME/.gitconfig
 ln -sf $PWD/config/gitconfig $HOME/.gitconfig
 
 echo "Create symlink for vim"

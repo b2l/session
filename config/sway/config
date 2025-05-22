@@ -78,20 +78,20 @@ bindsym $mod+Shift+Space exec --no-startup-id rofi -show run
 
 # change focus
 bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
+bindsym $mod+t focus down
+bindsym $mod+n focus up
 bindsym $mod+l focus right
 
 # move focused window
 bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
+bindsym $mod+Shift+t move down
+bindsym $mod+Shift+n move up
 bindsym $mod+Shift+l move right
 
 # Move workspace
 bindsym $mod+Ctrl+h move workspace to output left
-bindsym $mod+Ctrl+j move workspace to output down
-bindsym $mod+Ctrl+k move workspace to output up
+bindsym $mod+Ctrl+t move workspace to output down
+bindsym $mod+Ctrl+t move workspace to output up
 bindsym $mod+Ctrl+l move workspace to output right
 
 # split in horizontal orientation
@@ -160,14 +160,6 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
-# sound bindings
-# bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q set Master 5%+
-# bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q set Master 5%-
-# bindsym XF86AudioMute exec amixer -q set Master toggle
-# bindsym XF86AudioPlay exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
-# bindsym XF86AudioNext exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
-# bindsym XF86AudioPrev exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
-
 # Mouse
 focus_follows_mouse no
 mouse_warping none
@@ -205,25 +197,9 @@ bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
 # Special key to take a screenshot with grim
 bindsym Print exec grim
 
-# Start i3bar to display a workspace bar (plus the system information i3status
+# Start swaybar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar swaybar_command waybar
-#bar {
-#        position top
-#        font pango:Source Code Variable 12
-#        separator_symbol " | "
-#        # status_command i3status --config ~/.i3status.conf
-#        status_command ~/.bin/i3status_custom
-#        colors {
-#          separator $red
-#          background $base03
-#          statusline $blue
-#          focused_workspace $base3 $green $base3
-#          active_workspace $base3 $violet $base3
-#          inactive_workspace $base01 $base1 $base03
-#          urgent_workspace $magenta $magenta $base3
-#        }
-#}
 
 # scratchpad
 bindsym $mod+Shift+minus move scratchpad
