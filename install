@@ -12,13 +12,10 @@ sudo dnf install -y \
   --skip-unavailable \
   --allowerasing \
   vim \
-  arandr \
   autoconf \
   automake \
   cmake \
-  code \
   ctags \
-  rofi \
   dunst \
   exa \
   fedora-workstation-repositories \
@@ -26,8 +23,14 @@ sudo dnf install -y \
   gcc-c++ \
   htop \
   httpie \
-  sway \
-  swaylock \
+  hyprland \
+  hyprland-devel \
+  hyprpaper \
+  hyprlock \
+  hypridle \
+  lf \
+  imv \
+  mpv \
   waybar \
   jq \
   keychain \
@@ -37,25 +40,25 @@ sudo dnf install -y \
   libxslt-devel \
   libyaml-devel \
   NetworkManager \
+  NetworkManager-tui \
   ncurses-devel \
   openssl-devel \
-  alacritty \
   readline-devel \
-  scrot \
-  syncthing \
+  foot \
   unixODBC-devel \
   util-linux-user \
   flatpak \
+  fira-code-fonts \
+  freetype-devel cairo-devel pango-devel wayland-devel libxkbcommon-devel harfbuzz \
+  meson scdoc wayland-protocols-devel \
   zsh
 
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 flatpak install -y --noninteractive flathub com.spotify.Client
 flatpak install -y --noninteractive flathub org.mozilla.firefox
-
-echo "=============="
-echo "Install fira code font"
-./install_fira_font
+flatpak install -y --noninteractive flathub com.vscodium.codium
+flatpak install -y --noninteractive org.mozilla.Thunderbird
 
 mkdir -p $HOME/.local/bin
 
@@ -99,17 +102,48 @@ rm -rf $HOME/.vim
 ln -sf $PWD/vim/vimrc $HOME/.vimrc
 ln -sf $PWD/vim/vim $HOME/.vim
 
-echo "Create symlink for sway"
-rm -rf $HOME/.config/sway $HOME/.config/compton $HOME/.config/waybar $HOME/.config/dunst
-ln -sf $PWD/config/sway $HOME/.config/sway
-ln -sf $PWD/config/compton $HOME/.config/compton
-ln -sf $PWD/config/waybar $HOME/.config/waybar
+# rm -rf $HOME/.config/sway $HOME/.config/compton $HOME/.config/waybar $HOME/.config/dunst
+# ln -sf $PWD/config/sway $HOME/.config/sway
+# ln -sf $PWD/config/compton $HOME/.config/compton
+# ln -sf $PWD/config/waybar $HOME/.config/waybar
+# ln -sf $PWD/config/dunst $HOME/.config/dunst
+#
+rm -rf $HOME/.config/hypr $HOME/.config/dunst $HOME/.config/waybar $HOME/.config/foot $HOME/.config/imv $HOME/.config/lf $HOME/.config/systed $HOME/.configtofi
+echo "Creat symlink for hypr config"
+ln -sf $PWD/config/hypr $HOME/.config/hypr
+echo "Creat symlink for dunst config"
 ln -sf $PWD/config/dunst $HOME/.config/dunst
+echo "Creat symlink for foot config"
+ln -sf $PWD/config/foot $HOME/.config/foot
+echo "Creat symlink for imv config"
+ln -sf $PWD/config/imv $HOME/.config/imv
+echo "Creat symlink for lf config"
+ln -sf $PWD/config/lf $HOME/.config/lf
+echo "Creat symlink for systemd config"
+ln -sf $PWD/config/systemd $HOME/.config/systemd
+echo "Creat symlink for tofi config"
+ln -sf $PWD/config/tofi $HOME/.config/tofi
+echo "Creat symlink for waybar config"
+ln -sf $PWD/config/waybar $HOME/.config/waybar
 
 echo "Create symlink for .bin"
 rm -rf $HOME/.bin
 ln -sf $PWD/bin $HOME/.bin
 
+echo "Building tofi"
+pushd $HOME/.local/share
+if [ -d tofi ]; then
+  pushd tofi
+  git pull --rebase
+else
+  git clone git@github.com:philj56/tofi.git
+  pushd tofi
+fi
+meson build && sudo ninja -C build install
+popd
+popd
+
 echo "================="
 echo "Changing default shell"
 chsh -s /bin/zsh
+

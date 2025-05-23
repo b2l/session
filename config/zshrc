@@ -40,11 +40,9 @@ reset() {
 }
 
 alias d=docker
-alias dc="docker compose"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /home/nmedda/.asdf/installs/vault/0.9.5/bin/vault vault
 
-export PATH=$HOME/.config/rofi/scripts:$PATH
+export PATH=$HOME/.local/bin:$PATH
